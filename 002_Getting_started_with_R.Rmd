@@ -1,0 +1,27 @@
+---
+title: "002 - Getting started with R"
+output:
+  html_notebook: 
+    number_sections: yes
+    theme: readable
+    toc: yes
+---
+
+```{r echo = F}
+options(crayon.enabled = FALSE)
+```
+
+## Links to other notebooks
+1. [What is a DB?](001_What_is_a_database.nb.html)
+2. [Getting started with R](002_Getting_started_with_R.nb.html)
+3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
+4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
+
+# Getting started with R
+## Download R
+### Optionally RStudio
+## Download DBI
+## Download Postgres
+## Download SQLite
+### Optionally download dplyr and dbplyr
+## What on earth is that funny looking %>%

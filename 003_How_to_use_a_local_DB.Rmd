@@ -1,0 +1,230 @@
+---
+title: "003 - How to use a local DB"
+output:
+  html_notebook:
+    number_sections: yes
+    theme: readable
+    toc: yes
+---
+
+```{r echo = F}
+options(crayon.enabled = FALSE)
+```
+
+## Links to other notebooks
+1. [What is a DB?](001_What_is_a_database.nb.html)
+2. [Getting started with R](002_Getting_started_with_R.nb.html)
+3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
+4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
+
+# Set up a local DB
+
+To introduce working with a database, we'll use one you can't break or mess up, since it's just running locally on your computer. SQLite is a lightweight DB platform that's widely available and relatively simple. It's so simple that the "server" part is literally just a file sitting in your working directory, instead of a whole other application. You can use your command line as a client, or you can use R.
+
+## At the command line
+
+You could open your command line/Terminal/PowerShell and type individual commands:
+
+```
+cd YOUR_WORKING_DIRECTORY
+sqlite3 experiment_db
+```
+
+Then you can use `.help` for instructions, and input all the SQL you want (or `.exit` to quit). But it's a little bit hard to read at the command line, so lets do it from R instead.
+
+## Inside R
+
+```{r echo = FALSE}
+# this is a hidden chunk before we start manipulating the DB
+# just to make sure it's a clean environment
+if (exists("con") && 
+    class(con) == "SQLiteConnection" && 
+    con@dbname == "./experiment.db") {
+  dbDisconnect(con)
+  invisible()
+}
+
+if (file.exists("./experiment.db")) {
+  file.remove("./experiment.db")
+  invisible()
+}
+```
+
+```{r}
+library(RSQLite)
+con <- dbConnect(SQLite(), "./experiment.db")
+```
+
+The `con` object we just created is important. It's how R knows where and how to send SQL queries, and how to process the data that gets returned back from them.
+
+> You can always make new connections to a database, but either your DB or R will crash if you run out of memory. This is very unlikely to happen in normal usage (both can handle **millions** of connections concurrently), but it's a good idea to close a connection you opened after your script is done: `dbDisconnect(con)`
+
+Now we have an empty database, stored in a file in our working directory. 
+
+# Load data into DB
+
+Let's go back to our yields experiment and put that data into our database. Again, all of this could be done at the command line instead.
+
+
+
+```{r}
+treatments <- data.frame(
+  plot_id = as.integer(c(101, 102, 103, 104, 201, 202, 203, 204)),
+  crop = c("corn", "corn", "soy", "soy", "corn", "soy", "corn", "soy"),
+  tillage = c(
+    "no-till", "strip-till", "strip-till", "no-till", 
+    "strip-till", "no-till", "no-till", "strip-till"
+    )
+)
+
+yields <- data.frame(
+  plot_id = as.integer(c(101, 102, 103, 104, 201, 202, 203, 204)),
+  Mg_ha = c(10, 12, 4.5, 4.5, 11, 3, 9.5, 5)
+)
+```
+## Pure SQL from R
+
+You can run arbitrary SQL from R using `dbExecute()`. First you need to make a statement that creates a table (called `CREATE TABLE`, which is nice and easy). Then you need a statement to `INSERT INTO` that table sets of `VALUES`. Finally you can check your work with `dbGetQuery()` to see what was written.
+
+```{r paged.print=FALSE}
+dbExecute(
+  con, "
+CREATE TABLE `treatments` (
+  `plot_id` INTEGER,
+  `crop` TEXT,
+  `tillage` TEXT
+);
+")
+
+dbExecute(
+  con, "
+INSERT INTO treatments (plot_id, crop, tillage) 
+  VALUES 
+  (101,'corn','no-till'), 
+  (102,'corn','strip-till'),
+  (103,'soy','strip-till'),
+  (104,'soy','no-till'),
+  (201,'corn','strip-till'),
+  (202,'soy','no-till'),
+  (203,'corn','no-till'),
+  (204,'soy','strip-till');
+")
+
+dbGetQuery(con, "SELECT * FROM treatments;")
+
+```
+
+That is kind of hard to read, and hard to write by hand without making any mistakes. We can use the R to handle a lot of that for us.
+
+## Using DBI to handle the SQL
+
+```{r paged.print=FALSE}
+dbWriteTable(con, "yields", yields)
+
+dbReadTable(con, "yields")
+```
+
+`dbWriteTable` did all the work of converting the dataframes into those long SQL statements, then sent and executed the query. If you want to reset the database back to the beginning to try running these again, you should run `dbRemoveTable(con, "treatments")` and `dbRemoveTable(con, "yields")`
+
+
+# Get list of tables
+
+```{r}
+dbListTables(con)
+```
+
+This is the same output you'd get from `.tables` at the SQLite command line. 
+
+# Reading tables
+
+## Vanilla SQL and DBI
+
+I just showed examples of how to read individual tables with `dbGetQuery(con, "SELECT * FROM treatments;")` and `dbReadTable(con, "yields")`. These functions both send out a query, and return the whole table back to R immediately. This is fine for small tables, but if a table has a million rows, this might be too slow and cumbersome.
+
+Fortunately one of the powerful features of databases is that you can send a query and get back a preview first. SQL provides many operations that you can do inside the database, like counting rows, adding two columns together, filtering on conditions, and lots more. If you've already memorized all of that, great! Otherwise there's the `{dbplyr}` package to handle a lot of the query construction for you.
+
+## Tidy R
+
+```{r, paged.print = F}
+library(dplyr)
+library(dbplyr)
+tbl(con, "treatments")
+```
+
+Notice at the top, it says `table<treatments> [?? x 3]`? We know there are only those 8 rows, but the database could have millions. It's only returning this short preview. If we want to manipulate this query, we can do that without forcing the database to give us everything. Let's look at only the rows that match corn plots.
+
+
+```{r paged.print = F}
+tbl(con, "treatments") %>% 
+  filter(crop == "corn")
+```
+
+Now we've got a "lazy query", because the filtering happened in the database, not in R. We can poke into the backend and find out what's being executed:
+
+```{r paged.print = F}
+tbl(con, "treatments") %>% 
+  filter(crop == "corn") %>% 
+  explain()
+```
+
+Another common use case is group summaries:
+
+```{r paged.print = F}
+number_of_plots <- tbl(con, "treatments") %>% 
+  group_by(crop, tillage) %>% 
+  tally() 
+
+number_of_plots
+```
+
+And again, we can see what SQL query is really being sent with `explain()`:
+
+```{r paged.print = F}
+explain(number_of_plots)
+```
+
+
+But there are some functions that can only be run inside R. For those, you have to force the lazy query to execute fully, with `collect()`.
+
+```{r paged.print = F}
+tbl(con, "treatments") %>% 
+  collect() %>% 
+  mutate(
+    label = stringr::str_to_title(tillage),
+    Rep = plot_id %/% 100
+    )
+```
+
+You can try running it without the `collect()` and you'll see you get a fairly unhelpful error message. However, if you see any kind of error that claims a column isn't present when you know it's there, or a function is missing, that's a good indicator of a failed lazy query. 
+
+# Joins
+
+One of the most powerful functions in SQL is the join. There are several types of joins, and it usually takes a little thinking to make sure you're getting the one you want. If there's a one-to-one relationship with your keys (each row is identified by one `plot_id`, and each `plot_id` only refers to one row in a table, for example), then a **LEFT JOIN** is a good bet.
+
+## Vanilla SQL
+```{r paged.print = F}
+dbGetQuery(
+  con, "
+SELECT * FROM treatments 
+  LEFT JOIN yields 
+  ON treatments.plot_id = yields.plot_id;
+  "
+)
+```
+
+Notice that `plot_id` gets printed twice, this is a quirk of SQL. While it is nice to make sure that the right columns were matched, it's usually just in the way. There are cleaner ways to get your query using tidy R syntax.
+
+## Tidy R
+```{r paged.print = FALSE}
+yield_data <- 
+  left_join(
+    tbl(con, "treatments"), 
+    tbl(con, "yields")
+    )
+
+yield_data
+```
+
+Again, notice that this is a lazy query! The join happened inside the DB. This can be MUCH faster than inside R for large complex joins. We can then `collect()` the result and use it for further analysis.
+
+Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well. However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{Postgres}` though, so let's move there and start trying to read the PSA On-Farm database.
