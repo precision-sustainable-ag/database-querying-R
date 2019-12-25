@@ -2,14 +2,12 @@
 title: "001 - What is a database?"
 output:
   html_notebook: 
+    highlight: tango
     number_sections: yes
     theme: readable
     toc: yes
 ---
 
-```{r echo = F}
-options(crayon.enabled = FALSE)
-```
 
 ## Links to other notebooks
 1. [What is a DB?](001_What_is_a_database.nb.html)
@@ -74,9 +72,9 @@ This sort of structure is especially helpful where information from one table wo
 
 ## What do I do with it though?
 
-In general, databases are for storage and organization, and you use other tools like R or SAS for analysis, so you could run a SQL command to join those two tables:
+In general, databases are for **storage** and **organization**, and you use other tools like R or SAS for **analysis**. Once you have the two tables, you join them either in the DB (via SQL) or locally (using `merge` or `dplyr::full_join`):
 
-```{r, echo = F, paged.print = F}
+```{r paged.print = F}
 yield_data <- merge(treatments, yields)
 yield_data
 ```

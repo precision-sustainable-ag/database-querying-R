@@ -2,14 +2,12 @@
 title: "002 - Getting started with R"
 output:
   html_notebook: 
+    highlight: tango
     number_sections: yes
     theme: readable
     toc: yes
 ---
 
-```{r echo = F}
-options(crayon.enabled = FALSE)
-```
 
 ## Links to other notebooks
 1. [What is a DB?](001_What_is_a_database.nb.html)
@@ -20,8 +18,11 @@ options(crayon.enabled = FALSE)
 # Getting started with R
 ## Download R
 ### Optionally RStudio
+
+
 ## Download DBI
 ## Download Postgres
 ## Download SQLite
 ### Optionally download dplyr and dbplyr
+https://db.rstudio.com/
 ## What on earth is that funny looking %>%

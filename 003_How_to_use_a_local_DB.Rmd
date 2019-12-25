@@ -2,14 +2,12 @@
 title: "003 - How to use a local DB"
 output:
   html_notebook:
+    highlight: tango
     number_sections: yes
     theme: readable
     toc: yes
 ---
 
-```{r echo = F}
-options(crayon.enabled = FALSE)
-```
 
 ## Links to other notebooks
 1. [What is a DB?](001_What_is_a_database.nb.html)
@@ -141,17 +139,42 @@ This is the same output you'd get from `.tables` at the SQLite command line.
 
 I just showed examples of how to read individual tables with `dbGetQuery(con, "SELECT * FROM treatments;")` and `dbReadTable(con, "yields")`. These functions both send out a query, and return the whole table back to R immediately. This is fine for small tables, but if a table has a million rows, this might be too slow and cumbersome.
 
-Fortunately one of the powerful features of databases is that you can send a query and get back a preview first. SQL provides many operations that you can do inside the database, like counting rows, adding two columns together, filtering on conditions, and lots more. If you've already memorized all of that, great! Otherwise there's the `{dbplyr}` package to handle a lot of the query construction for you.
+Fortunately one of the powerful features of databases is that you can send a query and get back a preview without computing the whole request. Besides just getting back whole tables, SQL provides many operations that you can do inside the database, sending back just that preview. These functions include counting rows, adding two columns together, filtering on conditions, and lots more. This way you can construct a query and change it bit-by-bit until you're sure you're getting the right data without sacrificing speed and memory at each step.
+
+You can do this with the vanilla SQL interface:
+
+```{r paged.print = FALSE}
+q <- dbSendQuery(con, "SELECT * FROM treatments")
+
+q
+
+header <- dbFetch(q, n = 5)
+header
+```
+
+Then you look at the preview and decide that is the query you wanted:
+
+```{r paged.print = FALSE}
+remaining <- dbFetch(q, n = Inf)
+rbind(header, remaining)
+
+dbClearResult(q)
+```
+And you have to clear the pending query when you're done. This pattern of having intermediate function calls and variables is a pain and a common source of errors, so I don't recommend it. But if you have a particularly complex SQL query you've written, this is one way to go.
+
+
 
 ## Tidy R
 
+If you don't want to memorize new SQL functions and handle query-state management, there is an alternative in the database backend of the popular `{dplyr}` package. `{dbplyr}` takes the common verbs you can learn on locally stored dataframes and translates them into SQL, then constructs the request for you.
+
 ```{r, paged.print = F}
-library(dplyr)
-library(dbplyr)
+library(dplyr, warn.conflicts = F)
+library(dbplyr, warn.conflicts = F)
 tbl(con, "treatments")
 ```
 
-Notice at the top, it says `table<treatments> [?? x 3]`? We know there are only those 8 rows, but the database could have millions. It's only returning this short preview. If we want to manipulate this query, we can do that without forcing the database to give us everything. Let's look at only the rows that match corn plots.
+Notice at the top, it says `table<treatments> [?? x 3]`? We actually know there are only those 8 rows, but the database could have millions. It's only returning this short preview. If we want to manipulate this query, we can do that without forcing the database to give us everything. Let's look at only the rows that match corn plots.
 
 
 ```{r paged.print = F}
@@ -164,7 +187,7 @@ Now we've got a "lazy query", because the filtering happened in the database, no
 ```{r paged.print = F}
 tbl(con, "treatments") %>% 
   filter(crop == "corn") %>% 
-  explain()
+  show_query()
 ```
 
 Another common use case is group summaries:
@@ -177,10 +200,10 @@ number_of_plots <- tbl(con, "treatments") %>%
 number_of_plots
 ```
 
-And again, we can see what SQL query is really being sent with `explain()`:
+And again, we can see what SQL query is really being sent with `show_query()`:
 
 ```{r paged.print = F}
-explain(number_of_plots)
+show_query(number_of_plots)
 ```
 
 
@@ -195,7 +218,9 @@ tbl(con, "treatments") %>%
     )
 ```
 
-You can try running it without the `collect()` and you'll see you get a fairly unhelpful error message. However, if you see any kind of error that claims a column isn't present when you know it's there, or a function is missing, that's a good indicator of a failed lazy query. 
+You can try running it without the `collect()` and you'll see you get a fairly unhelpful error message. However, if you see any kind of error that claims a column isn't present when you know it's there, or a function is missing, that's a good indicator of a failed lazy query.
+
+Here's a handy reference for the functions that `{dbplyr}` currently knows how to translate and run inside the DB: https://dbplyr.tidyverse.org/articles/sql-translation.html
 
 # Joins
 
@@ -227,4 +252,32 @@ yield_data
 
 Again, notice that this is a lazy query! The join happened inside the DB. This can be MUCH faster than inside R for large complex joins. We can then `collect()` the result and use it for further analysis.
 
-Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well. However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{Postgres}` though, so let's move there and start trying to read the PSA On-Farm database.
+Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well (e.g. https://r4ds.had.co.nz/relational-data.html#understanding-joins). However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{Postgres}` though, so we'll look at them more when we read the PSA On-Farm database.
+
+----
+
+# Putting it all together
+
+```{r paged.print = FALSE}
+data_summary <- left_join(
+  tbl(con, "treatments"),
+  tbl(con, "yields")
+) %>% 
+  group_by(crop, tillage) %>% 
+  summarise(
+    mean = mean(Mg_ha), 
+    sd = sd(Mg_ha)
+    )
+
+show_query(data_summary)
+
+data_summary
+```
+
+## Cleaning up
+
+It's not strictly required to close connections manually, because R will close inactive ones eventually. But it's good practice to do, so that it will be a habit when you're connecting to remote databases that may have many concurrent users.
+
+```{r}
+dbDisconnect(con)
+```
