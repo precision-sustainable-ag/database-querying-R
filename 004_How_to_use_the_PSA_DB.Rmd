@@ -1,0 +1,35 @@
+---
+title: "004 - How to use the PSA DB"
+output:
+  html_notebook:
+    highlight: tango
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_float: yes
+    code_folding: none
+    includes:
+      before_body: assets/header.html
+      after_body: assets/footer.html
+---
+
+
+## Links to other notebooks
+
+1. [What is a DB?](001_What_is_a_database.nb.html)
+2. [Getting started with R](002_Getting_started_with_R.nb.html)
+3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
+4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
+
+# Getting credentials
+
+Source file: [`secret-example.R`](secret-example.R)
+
+```{r echo=FALSE}
+cat(readLines("secret-example.R"), sep = "\n")
+```
+
+```{r}
+source("secret.R")
+```
+

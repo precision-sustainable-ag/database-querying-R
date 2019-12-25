@@ -27,27 +27,30 @@ First up, is R the only way to interact with databases? No, but it's a scripting
 
 ## What are these documents?
 
-In this series, there are two files for each step in the tutorial. One is called `###_Title.nb.html`, and it's a plain HTML file you can open. In that file, you will see plain text, as well as boxes of code. The grey boxes have code you can copy-paste into an R script, or line-by-line at the R console. The white boxes below show the output you should see after running each chunk. They look like this:
+### Non-interactive HTML
+
+In this series, there are two files for each step in the tutorial. One is called `###_Title.nb.html`, and it's a plain HTML file you can open in your browser. In that file, you will see plain text, as well as boxes of code. The grey boxes have code you can copy-paste into an R script, or line-by-line at the R console. The white boxes below show the output you should see after running each chunk. They look like this:
 
 ```{r}
 mean(rnorm(1000))
 ```
 
-There are also files called `###_Title.Rmd`. These are special R scripts you can open in Rstudio (see below). The text you're reading now is in there, but the code chunks will look like this:
-
-<pre>&zwj;```{r}                 <img src="assets/cog-solid.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/caret-square-down-regular.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/play-solid.svg" style="height: 1em;">
+### Interactive R Notebooks
+> There are also files called `###_Title.Rmd`. These are special R scripts you can open in RStudio (see below). The text you're reading now is in there, but the code chunks will look like this:
+> 
+> <pre>&zwj;```{r}                 <img src="assets/cog-solid.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/caret-square-down-regular.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/play-solid.svg" style="height: 1em;">
 mean(rnorm(1000))
 &zwj;```</pre>
-
-If you click the "Run Current Chunk" button <img src="assets/play-solid.svg" style="height: 1em;">, that section of code will execute, and the R output will appear immediately below it in the document. Each chunk shares an environment with the other chunks in the document, so if you mess something up and want to run all the previous ones to reset, click the "Run All Chunks Above" button <img src="assets/caret-square-down-regular.svg" style="height: 1em;">.
+> 
+> If you click the "Run Current Chunk" button <img src="assets/play-solid.svg" style="height: 1em;"> (in RStudio, not in the HTML document), that section of code will execute, and the R output will appear immediately below it in the document. You can play around with the code and see how the output is affected. Each chunk shares an environment with the other chunks in the document, so if you mess something up and want to run all the previous ones to reset, click the "Run All Chunks Above" button <img src="assets/caret-square-down-regular.svg" style="height: 1em;">.
 
 # Download R
 
-A mirror of the R core application is available at https://cran.rstudio.com/, and for Mac and Windows, setup is a breeze. Linux has a few challenges, usually revolving around installing packages from their source code instead of distributed binaries, so if you're a Linux user, you probably have more expertise than I do on the topic.
+A mirror of the R core application is available at [https://cran.rstudio.com/](https://cran.rstudio.com/){target="_blank"}, and for Mac and Windows, setup is a breeze. Linux has a few challenges, usually revolving around installing packages from their source code instead of distributed binaries, so if you're a Linux user, you probably have more expertise than I do on the topic.
 
 ## Optionally RStudio
 
-I strongly recommend using RStudio, available from https://rstudio.com/products/rstudio/download/#download. It's an integrated development environment, or IDE, so you can see your code and output together. It also has lots of features for productivity, like autocomplete and syntax highlighting.
+I strongly recommend using RStudio, available from [https://rstudio.com/products/rstudio/download/#download](https://rstudio.com/products/rstudio/download/#download){target="_blank"}. It's an integrated development environment, or IDE, so you can see your code and output together. It also has lots of features for productivity, like autocomplete and syntax highlighting.
 
 # Installing packages
 
@@ -81,7 +84,7 @@ install.packages("RSQLite")
 
 While not strictly required, I will be using the `{dbplyr}` interface to translate R code to the SQL backend. The syntax is much more user-friendly and intuitive, and it's useful for your local analyses as well. There are many tutorials online for learning `{dplyr}`, so this will only be a crash course in what's necessary.
 
-A good resource for databases and R in general is https://db.rstudio.com/, which has sections for different database systems, how SQL translation works, etc.
+A good resource for databases and R in general is [https://db.rstudio.com/](https://db.rstudio.com/){target="_blank"}, which has sections for different database systems, how SQL translation works, etc.
 
 ```{r eval = FALSE}
 install.packages("dplyr")
