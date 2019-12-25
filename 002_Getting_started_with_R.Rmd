@@ -25,6 +25,22 @@ output:
 
 First up, is R the only way to interact with databases? No, but it's a scripting language and development environment specifically designed for ingesting, analyzing, and communicating data. You can achieve all the tasks in this series using Python, SAS, JavaScript, etc.
 
+## What are these documents?
+
+In this series, there are two files for each step in the tutorial. One is called `###_Title.nb.html`, and it's a plain HTML file you can open. In that file, you will see plain text, as well as boxes of code. The grey boxes have code you can copy-paste into an R script, or line-by-line at the R console. The white boxes below show the output you should see after running each chunk. They look like this:
+
+```{r}
+mean(rnorm(1000))
+```
+
+There are also files called `###_Title.Rmd`. These are special R scripts you can open in Rstudio (see below). The text you're reading now is in there, but the code chunks will look like this:
+
+<pre>&zwj;```{r}                 <img src="assets/cog-solid.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/caret-square-down-regular.svg" style="height: 1em;">&nbsp;&nbsp;<img src="assets/play-solid.svg" style="height: 1em;">
+mean(rnorm(1000))
+&zwj;```</pre>
+
+If you click the "Run Current Chunk" button <img src="assets/play-solid.svg" style="height: 1em;">, that section of code will execute, and the R output will appear immediately below it in the document. Each chunk shares an environment with the other chunks in the document, so if you mess something up and want to run all the previous ones to reset, click the "Run All Chunks Above" button <img src="assets/caret-square-down-regular.svg" style="height: 1em;">.
+
 # Download R
 
 A mirror of the R core application is available at https://cran.rstudio.com/, and for Mac and Windows, setup is a breeze. Linux has a few challenges, usually revolving around installing packages from their source code instead of distributed binaries, so if you're a Linux user, you probably have more expertise than I do on the topic.
@@ -39,17 +55,23 @@ Base R is useful, but for this project we are going to take advantage of a few d
 
 ## Download DBI
 
+This package provides a backend for database drivers to communicate with R in a uniform way.
+
 ```{r eval = FALSE}
 install.packages("DBI")
 ```
 
 ## Download RPostgres
 
+This package contains the driver to connect to PostgreSQL databases, like the PSA On-Farm DB.
+
 ```{r eval = FALSE}
 install.packages("RPostgres")
 ```
 
-## Download SQLite
+## Download RSQLite
+
+This package contains both the driver and the database system itself for SQLite3. It's a lightweight DB that you can run on your computer for testing and learning (in the next tutorial).
 
 ```{r eval = FALSE}
 install.packages("RSQLite")
@@ -58,7 +80,8 @@ install.packages("RSQLite")
 ### Optionally download dplyr and dbplyr
 
 While not strictly required, I will be using the `{dbplyr}` interface to translate R code to the SQL backend. The syntax is much more user-friendly and intuitive, and it's useful for your local analyses as well. There are many tutorials online for learning `{dplyr}`, so this will only be a crash course in what's necessary.
-https://db.rstudio.com/
+
+A good resource for databases and R in general is https://db.rstudio.com/, which has sections for different database systems, how SQL translation works, etc.
 
 ```{r eval = FALSE}
 install.packages("dplyr")
@@ -100,9 +123,9 @@ This code says:
 * Separate the rows into groups based on what's in the species column
 * Summarize all the rows in each group to a single row, with an observation `m` that's the mean of our new `Petal.Area`
 
-If you're following along with this code, I recommend running each chunk of lines up to the `%>%` to see each step, like this:
+If you're following along with this code, I recommend running each chunk of lines up to the `%>%` to see how each step works, like this:
 
-```{r paged.print = FALSE}
+```{r eval = FALSE, paged.print = FALSE}
 iris
 
 iris %>% 
