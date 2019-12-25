@@ -6,6 +6,7 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
+    toc_float: yes
     code_folding: none
     includes:
       before_body: assets/header.html
@@ -21,13 +22,111 @@ output:
 4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
 
 # Getting started with R
-## Download R
-### Optionally RStudio
 
+First up, is R the only way to interact with databases? No, but it's a scripting language and development environment specifically designed for ingesting, analyzing, and communicating data. You can achieve all the tasks in this series using Python, SAS, JavaScript, etc.
+
+# Download R
+
+A mirror of the R core application is available at https://cran.rstudio.com/, and for Mac and Windows, setup is a breeze. Linux has a few challenges, usually revolving around installing packages from their source code instead of distributed binaries, so if you're a Linux user, you probably have more expertise than I do on the topic.
+
+## Optionally RStudio
+
+I strongly recommend using RStudio, available from https://rstudio.com/products/rstudio/download/#download. It's an integrated development environment, or IDE, so you can see your code and output together. It also has lots of features for productivity, like autocomplete and syntax highlighting.
+
+# Installing packages
+
+Base R is useful, but for this project we are going to take advantage of a few database-specific packages. Pay attention after you run each of these lines! When you run `install.packages`, lots of informative messages and download progress bars are printed, but there may be errors and warnings as well.
 
 ## Download DBI
-## Download Postgres
+
+```{r eval = FALSE}
+install.packages("DBI")
+```
+
+## Download RPostgres
+
+```{r eval = FALSE}
+install.packages("RPostgres")
+```
+
 ## Download SQLite
+
+```{r eval = FALSE}
+install.packages("RSQLite")
+```
+
 ### Optionally download dplyr and dbplyr
+
+While not strictly required, I will be using the `{dbplyr}` interface to translate R code to the SQL backend. The syntax is much more user-friendly and intuitive, and it's useful for your local analyses as well. There are many tutorials online for learning `{dplyr}`, so this will only be a crash course in what's necessary.
 https://db.rstudio.com/
-## What on earth is that funny looking %>%
+
+```{r eval = FALSE}
+install.packages("dplyr")
+install.packages("dbplyr")
+```
+
+# What on earth is that funny looking `%>%`
+
+In a lot of new R code, especially so-called `{tidyverse}`-flavored code, you'll see something called a **pipe operator**, `%>%`. It's for function composition, and you can think of it like reading your code out loud, and saying "then" every time you see it.
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+
+rnorm(5) %>%   # generate 5 random numbers
+  sort() %>%    # THEN sort those
+  abs() %>%     # THEN take the absolute value of those
+  sqrt()        # THEN take the square-root of those
+```
+
+This is identical to `sqrt(abs(sort(rnorm(5))))`. Whether you prefer the nested-parentheses style or the pipe-then style is up to you, just be aware that I'll be using the pipes in some of these tutorials.
+
+The pipe is especially useful for the **table verbs** of `{dplyr}`, which usually take a dataframe as their first argument, and return a dataframe as output. This way they can be chained together. Here's an example of that:
+
+```{r paged.print = FALSE}
+iris %>% 
+  filter(Species != "setosa") %>% 
+  select(Petal.Length, Petal.Width, Species) %>% 
+  mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
+  group_by(Species) %>% 
+  summarize(m = mean(Petal.Area))
+```
+
+This code says:
+
+* Use the built-in `iris` dataset
+* Keep only the **rows** where `iris$Species` is not "setosa"
+* Keep only the **columns** for petal length/width and species
+* Make a new column (`Petal.Area`) and add it to the right of the dataframe, multiplying petal length and width
+* Separate the rows into groups based on what's in the species column
+* Summarize all the rows in each group to a single row, with an observation `m` that's the mean of our new `Petal.Area`
+
+If you're following along with this code, I recommend running each chunk of lines up to the `%>%` to see each step, like this:
+
+```{r paged.print = FALSE}
+iris
+
+iris %>% 
+  filter(Species != "setosa") 
+
+iris %>% 
+  filter(Species != "setosa") %>% 
+  select(Petal.Length, Petal.Width, Species) 
+
+iris %>% 
+  filter(Species != "setosa") %>% 
+  select(Petal.Length, Petal.Width, Species) %>% 
+  mutate(Petal.Area = Petal.Length * Petal.Width) 
+
+iris %>% 
+  filter(Species != "setosa") %>% 
+  select(Petal.Length, Petal.Width, Species) %>% 
+  mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
+  group_by(Species) 
+
+iris %>% 
+  filter(Species != "setosa") %>% 
+  select(Petal.Length, Petal.Width, Species) %>% 
+  mutate(Petal.Area = Petal.Length * Petal.Width) %>% 
+  group_by(Species) %>% 
+  summarize(m = mean(Petal.Area))
+```

@@ -6,6 +6,7 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
+    toc_float: yes
     code_folding: none
     includes:
       before_body: assets/header.html
@@ -29,8 +30,8 @@ To introduce working with a database, we'll use one you can't break or mess up, 
 You could open your command line/Terminal/PowerShell and type individual commands:
 
 ```
-cd YOUR_WORKING_DIRECTORY
-sqlite3 experiment_db
+cd ./PATH/TO/YOUR/WORKING/DIRECTORY
+sqlite3 experiment.db
 ```
 
 Then you can use `.help` for instructions, and input all the SQL you want (or `.exit` to quit). But it's a little bit hard to read at the command line, so lets do it from R instead.
@@ -177,8 +178,8 @@ And you have to clear the pending query when you're done. This pattern of having
 If you don't want to memorize new SQL functions and handle query-state management, there is an alternative in the database backend of the popular `{dplyr}` package. `{dbplyr}` takes the common verbs you can learn on locally stored dataframes and translates them into SQL, then constructs the request for you.
 
 ```{r, paged.print = F}
-library(dplyr, warn.conflicts = F)
-library(dbplyr, warn.conflicts = F)
+library(dplyr, warn.conflicts = FALSE)
+library(dbplyr, warn.conflicts = FALSE)
 tbl(con, "treatments")
 ```
 
@@ -260,7 +261,7 @@ yield_data
 
 Again, notice that this is a lazy query! The join happened inside the DB. This can be MUCH faster than inside R for large complex joins. We can then `collect()` the result and use it for further analysis.
 
-Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well (e.g. https://r4ds.had.co.nz/relational-data.html#understanding-joins). However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{Postgres}` though, so we'll look at them more when we read the PSA On-Farm database.
+Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well (e.g. https://r4ds.had.co.nz/relational-data.html#understanding-joins). However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{RPostgres}` though, so we'll look at them more when we read the PSA On-Farm database.
 
 ----
 
@@ -273,8 +274,8 @@ data_summary <- left_join(
 ) %>% 
   group_by(crop, tillage) %>% 
   summarise(
-    mean = mean(Mg_ha), 
-    sd = sd(Mg_ha)
+    mean = mean(Mg_ha, na.rm = TRUE), 
+    sd = sd(Mg_ha, na.rm = TRUE)
     )
 
 show_query(data_summary)

@@ -6,6 +6,7 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
+    toc_float: yes
     code_folding: none
     includes:
       before_body: assets/header.html
@@ -99,7 +100,8 @@ aggregate(
 Or if you prefer tidyverse-flavored R:
 
 ```{r paged.print = F}
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
+
 yield_data %>% 
   group_by(crop, tillage) %>% 
   summarise_at(
