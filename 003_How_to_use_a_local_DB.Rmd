@@ -6,10 +6,15 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
+    code_folding: none
+    includes:
+      before_body: assets/header.html
+      after_body: assets/footer.html
 ---
 
 
 ## Links to other notebooks
+
 1. [What is a DB?](001_What_is_a_database.nb.html)
 2. [Getting started with R](002_Getting_started_with_R.nb.html)
 3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
@@ -37,8 +42,9 @@ Then you can use `.help` for instructions, and input all the SQL you want (or `.
 # just to make sure it's a clean environment
 if (exists("con") && 
     class(con) == "SQLiteConnection" && 
-    con@dbname == "./experiment.db") {
-  dbDisconnect(con)
+    con@dbname == "./experiment.db" &&
+    DBI::dbIsValid(con)) {
+  DBI::dbDisconnect(con)
   invisible()
 }
 
@@ -93,6 +99,7 @@ CREATE TABLE `treatments` (
   `tillage` TEXT
 );
 ")
+# 0 rows affected (new table)
 
 dbExecute(
   con, "
@@ -107,6 +114,7 @@ INSERT INTO treatments (plot_id, crop, tillage)
   (203,'corn','no-till'),
   (204,'soy','strip-till');
 ")
+# 8 rows affected (new values)
 
 dbGetQuery(con, "SELECT * FROM treatments;")
 
