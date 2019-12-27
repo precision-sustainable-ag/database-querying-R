@@ -13,6 +13,9 @@ output:
       after_body: assets/footer.html
 ---
 
+```{r echo = FALSE}
+options(crayon.enabled = FALSE)
+```
 
 ## Links to other notebooks
 

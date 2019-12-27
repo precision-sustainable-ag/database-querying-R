@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -2843,6 +2842,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -2979,6 +2979,10 @@ div.tocify {
 
 
 <!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <div id="links-to-other-notebooks" class="section level2">
 <h2><span class="header-section-number">0.1</span> Links to other notebooks</h2>
 <ol style="list-style-type: decimal">
@@ -2990,6 +2994,7 @@ div.tocify {
 </div>
 <div id="getting-credentials" class="section level1">
 <h1><span class="header-section-number">1</span> Getting credentials</h1>
+<p>To follow along with this tutorial (and eventually use the database for real analyses) you need to get the login credentials. Rohit is the contact person for that, and you can see how I’ve stored them below. I have a fake file called <code>secret-example.R</code> that’s in this repository, so you can copy it and paste in your own username and password.</p>
 <p>Source file: <a href="secret-example.R"><code>secret-example.R</code></a></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
@@ -3003,6 +3008,7 @@ pg_password = &quot;&lt;your password&gt;&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Then save it as <code>secret.R</code> and this code chunk will run it, storing those 5 variables in the global environment.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwic2VjcmV0LlJcIilcbmBgYCJ9 -->
@@ -3010,10 +3016,279 @@ pg_password = &quot;&lt;your password&gt;&quot;</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="use-the-credentials-to-connect" class="section level1">
+<h1><span class="header-section-number">2</span> Use the credentials to connect</h1>
+<p>Now we can use them to connect to the database:</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5ciwgd2Fybi5jb25mbGljdHMgPSBGQUxTRSlcbmxpYnJhcnkoZGJwbHlyLCB3YXJuLmNvbmZsaWN0cyA9IEZBTFNFKVxubGlicmFyeShSUG9zdGdyZXMpXG5cbmNvbiA8LSBkYkNvbm5lY3QoXG4gIFBvc3RncmVzKCksXG4gIGRibmFtZSA9IHBnX2RibmFtZSxcbiAgaG9zdCA9IHBnX2hvc3QsXG4gIHBvcnQgPSBwZ19wb3J0LFxuICB1c2VyID0gcGdfdXNlcixcbiAgcGFzc3dvcmQgPSBwZ19wYXNzd29yZCxcbiAgc3NsbW9kZSA9IFwicmVxdWlyZVwiLFxuICBiaWdpbnQgPSBcIm51bWVyaWNcIlxuKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(dbplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">library</span>(RPostgres)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="kw">Postgres</span>(),</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">dbname =</span> pg_dbname,</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="dt">host =</span> pg_host,</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="dt">port =</span> pg_port,</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">  <span class="dt">user =</span> pg_user,</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">  <span class="dt">password =</span> pg_password,</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">  <span class="dt">sslmode =</span> <span class="st">&quot;require&quot;</span>,</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="dt">bigint =</span> <span class="st">&quot;numeric&quot;</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="explore-the-db" class="section level2">
+<h2><span class="header-section-number">2.1</span> Explore the DB</h2>
+<p>First thing, let’s make sure this is the right database and everything looks correct. We should see what tables are available:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJMaXN0VGFibGVzKGNvbilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">dbListTables</span>(con)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImNjX2ZhbWlsaWVzXCIgICAgICAgICAgICBcImRlY29tcF9iaW9tYXNzXCIgICAgICAgIFxuIFszXSBcInF1YWRyYXRzXCIgICAgICAgICAgICAgICBcInJvd3NcIiAgICAgICAgICAgICAgICAgIFxuIFs1XSBcIndlZWRfcmVzZWFyY2hcIiAgICAgICAgICBcInlpZWxkX21vbml0b3JcIiAgICAgICAgIFxuIFs3XSBcImluX2ZpZWxkX2Jpb21hc3NcIiAgICAgICBcInNpdGVfaW5mb3JtYXRpb25cIiAgICAgIFxuIFs5XSBcInlpZWxkXCIgICAgICAgICAgICAgICAgICBcImFwcGxpZWRfY2hlbWljYWxzXCIgICAgIFxuWzExXSBcInByb2R1Y2VyX2lkc1wiICAgICAgICAgICBcInRyZWF0bWVudHNcIiAgICAgICAgICAgIFxuWzEzXSBcImdwc19sb2NhdGlvbnNcIiAgICAgICAgICBcInNvaWxcIiAgICAgICAgICAgICAgICAgIFxuWzE1XSBcImJ1bGtfZGVuc2l0eVwiICAgICAgICAgICBcImNoZW1pY2FsX2ZhbWlsaWVzXCIgICAgIFxuWzE3XSBcInN1YnNhbXBsZXNcIiAgICAgICAgICAgICBcImNjX3NwZWNpZXNcIiAgICAgICAgICAgIFxuWzE5XSBcImNjX21peHR1cmVcIiAgICAgICAgICAgICBcImNoZW1pY2FsX25hbWVzXCIgICAgICAgIFxuWzIxXSBcImNjX3BsYW50aW5nX21ldGhvZHNcIiAgICBcImNjX3Rlcm1pbmF0aW9uX21ldGhvZHNcIlxuWzIzXSBcImdwc19wb2ludF90eXBlc1wiICAgICAgICBcImNhc2hfY3JvcHNcIiAgICAgICAgICAgIFxuWzI1XSBcImNvZGVzXCIgICAgICAgICAgICAgICAgICBcInN0YXRlc1wiICAgICAgICAgICAgICAgIFxuWzI3XSBcInNlYXNvbnNcIiAgICAgICAgICAgICAgICBcInRleHR1cmFsX2NsYXNzZXNcIiAgICAgIFxuWzI5XSBcImRlcHRoc1wiICAgICAgICAgICAgICAgICBcInN1YnBsb3RzXCIgICAgICAgICAgICAgIFxuWzMxXSBcInRleHR1cmVcIiAgICAgICAgICAgICAgICBcInRpbWVzXCIgICAgICAgICAgICAgICAgIFxuWzMzXSBcIndlYXRoZXJcIiAgICAgICAgICAgICAgICBcIndzZW5zb3JfYWxsb2NhdGlvblwiICAgIFxuWzM1XSBcImZhcm1faGlzdG9yeVwiICAgICAgICAgICBcIndzZW5zb3JfZGF0YVwiICAgICAgICAgIFxuWzM3XSBcInBnX3N0YXRfc3RhdGVtZW50c1wiICAgICBcInBnX2J1ZmZlcmNhY2hlXCIgICAgICAgIFxuIn0= -->
+<pre><code> [1] &quot;cc_families&quot;            &quot;decomp_biomass&quot;        
+ [3] &quot;quadrats&quot;               &quot;rows&quot;                  
+ [5] &quot;weed_research&quot;          &quot;yield_monitor&quot;         
+ [7] &quot;in_field_biomass&quot;       &quot;site_information&quot;      
+ [9] &quot;yield&quot;                  &quot;applied_chemicals&quot;     
+[11] &quot;producer_ids&quot;           &quot;treatments&quot;            
+[13] &quot;gps_locations&quot;          &quot;soil&quot;                  
+[15] &quot;bulk_density&quot;           &quot;chemical_families&quot;     
+[17] &quot;subsamples&quot;             &quot;cc_species&quot;            
+[19] &quot;cc_mixture&quot;             &quot;chemical_names&quot;        
+[21] &quot;cc_planting_methods&quot;    &quot;cc_termination_methods&quot;
+[23] &quot;gps_point_types&quot;        &quot;cash_crops&quot;            
+[25] &quot;codes&quot;                  &quot;states&quot;                
+[27] &quot;seasons&quot;                &quot;textural_classes&quot;      
+[29] &quot;depths&quot;                 &quot;subplots&quot;              
+[31] &quot;texture&quot;                &quot;times&quot;                 
+[33] &quot;weather&quot;                &quot;wsensor_allocation&quot;    
+[35] &quot;farm_history&quot;           &quot;wsensor_data&quot;          
+[37] &quot;pg_stat_statements&quot;     &quot;pg_buffercache&quot;        </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Let’s look at one of the tables, the list of cover crop species:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJSZWFkVGFibGUoY29uLCBcImNjX3NwZWNpZXNcIilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">dbReadTable</span>(con, <span class="st">&quot;cc_species&quot;</span>)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgICAgY2Nfc3BlY2llICAgY2NfZmFtaWx5XG4xICAgICBBbm51YWwgUnllZ3Jhc3MgICAgIEdyYXNzZXNcbjIgICAgICAgICBTdWRhbiBncmFzcyAgICAgR3Jhc3Nlc1xuMyAgICAgICAgIFJhcGUvQ2Fub2xhIEJyb2FkbGVhdmVzXG40ICAgICAgICAgIENlcmVhbCBSeWUgICAgIEdyYXNzZXNcbjUgICAgICAgICAgV2ludGVyIFJ5ZSAgICAgR3Jhc3Nlc1xuNiAgICAgICAgICAgVHJpdGljYWxlICAgICBHcmFzc2VzXG43ICAgICAgICAgICAgICAgIE9hdHMgICAgIEdyYXNzZXNcbjggICAgICBDcmltc29uIENsb3ZlciAgICAgTGVndW1lc1xuOSAgICAgICAgICBSZWQgQ2xvdmVyICAgICBMZWd1bWVzXG4xMCAgICAgICBXaGl0ZSBDbG92ZXIgICAgIExlZ3VtZXNcbjExIFVua25vd24gQ2xvdmVyIHNwcCAgICAgTGVndW1lc1xuMTIgICAgICAgIEhhaXJ5IFZldGNoICAgICBMZWd1bWVzXG4xMyAgICAgV29vbHlwb2QgVmV0Y2ggICAgIExlZ3VtZXNcbjE0ICAgICAgICBDcm93biBWZXRjaCAgICAgTGVndW1lc1xuMTUgIFVua25vd24gVmV0Y2ggc3BwICAgICBMZWd1bWVzXG4xNiAgICAgIFJhZGlzaC9UdXJuaXAgQnJvYWRsZWF2ZXNcbjE3ICAgICAgICAgICAgTXVzdGFyZCBCcm9hZGxlYXZlc1xuMTggICAgICAgIFdpbnRlciBQZWFzICAgICBMZWd1bWVzXG4xOSAgICAgICAgICAgIEFsZmFsZmEgICAgIExlZ3VtZXNcbjIwICAgICAgICAgICAgICAgS2FsZSBCcm9hZGxlYXZlc1xuMjEgICAgICAgICAgICAgIFdoZWF0ICAgICBHcmFzc2VzXG4yMiAgICAgICAgICAgICBCYXJsZXkgICAgIEdyYXNzZXNcbjIzIFdoaXRlIENhaGFiYSBWZXRjaCAgICAgTGVndW1lc1xuIn0= -->
+<pre><code>            cc_specie   cc_family
+1     Annual Ryegrass     Grasses
+2         Sudan grass     Grasses
+3         Rape/Canola Broadleaves
+4          Cereal Rye     Grasses
+5          Winter Rye     Grasses
+6           Triticale     Grasses
+7                Oats     Grasses
+8      Crimson Clover     Legumes
+9          Red Clover     Legumes
+10       White Clover     Legumes
+11 Unknown Clover spp     Legumes
+12        Hairy Vetch     Legumes
+13     Woolypod Vetch     Legumes
+14        Crown Vetch     Legumes
+15  Unknown Vetch spp     Legumes
+16      Radish/Turnip Broadleaves
+17            Mustard Broadleaves
+18        Winter Peas     Legumes
+19            Alfalfa     Legumes
+20               Kale Broadleaves
+21              Wheat     Grasses
+22             Barley     Grasses
+23 White Cahaba Vetch     Legumes</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Notice that it returned the whole table, since this was not a lazy query. For a small table like this, that’s not a problem. But some of the tables are <strong>many</strong> rows. If you try to pull them all in using <code>dbReadTable</code>, you’ll end up waiting a while for some tables.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUYWtlcyB+MTFzIHRvIHJldHVyblxuZGJMaXN0VGFibGVzKGNvbikgJT4lIFxuICBzdHJpbmdyOjpzdHJfc3Vic2V0KFwiXnBnXCIsIG5lZ2F0ZSA9IFRSVUUpICU+JSBcbiAgcHVycnI6OnNldF9uYW1lcygpICU+JSBcbiAgcHVycnI6Om1hcF9kZnIoXG4gICAgfnRibChjb24sIC54KSAlPiUgXG4gICAgICB0YWxseSgpICU+JSBcbiAgICAgIGNvbGxlY3QoKSxcbiAgICAuaWQgPSBcInRhYmxlXCJcbiAgICApICU+JVxuICBwcmludChuID0gSW5mKVxuYGBgIn0= -->
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Takes ~11s to return</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">dbListTables</span>(con) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>stringr<span class="op">::</span><span class="kw">str_subset</span>(<span class="st">&quot;^pg&quot;</span>, <span class="dt">negate =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">set_names</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map_dfr</span>(</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    <span class="op">~</span><span class="kw">tbl</span>(con, .x) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">      </span><span class="kw">tally</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="st">      </span><span class="kw">collect</span>(),</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">    <span class="dt">.id =</span> <span class="st">&quot;table&quot;</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">    ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="st">  </span><span class="kw">print</span>(<span class="dt">n =</span> <span class="ot">Inf</span>)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIyBBIHRpYmJsZTogMzYgeCAyXG4gICB0YWJsZSAgICAgICAgICAgICAgICAgICAgICAgIG5cbiAgIDxjaHI+ICAgICAgICAgICAgICAgICAgICA8ZGJsPlxuIDEgY2NfZmFtaWxpZXMgICAgICAgICAgICAgICAgICAzXG4gMiBkZWNvbXBfYmlvbWFzcyAgICAgICAgICAgIDMxODRcbiAzIHF1YWRyYXRzICAgICAgICAgICAgICAgICAgICAgMFxuIDQgcm93cyAgICAgICAgICAgICAgICAgICAgICAgICAyXG4gNSB3ZWVkX3Jlc2VhcmNoICAgICAgICAgICAgICAgIDBcbiA2IHlpZWxkX21vbml0b3IgICAgICAgICAgICAgICAgMFxuIDcgaW5fZmllbGRfYmlvbWFzcyAgICAgICAgICAgMjQ2XG4gOCBzaXRlX2luZm9ybWF0aW9uICAgICAgICAgICAxMzRcbiA5IHlpZWxkICAgICAgICAgICAgICAgICAgICAgIDY1MVxuMTAgYXBwbGllZF9jaGVtaWNhbHMgICAgICAgICAgMTA1XG4xMSBwcm9kdWNlcl9pZHMgICAgICAgICAgICAgICAgNjFcbjEyIHRyZWF0bWVudHMgICAgICAgICAgICAgICAgICAgMlxuMTMgZ3BzX2xvY2F0aW9ucyAgICAgICAgICAgICAgICAwXG4xNCBzb2lsICAgICAgICAgICAgICAgICAgICAgICA5ODJcbjE1IGJ1bGtfZGVuc2l0eSAgICAgICAgICAgICAgICA2NFxuMTYgY2hlbWljYWxfZmFtaWxpZXMgICAgICAgICAgICAyXG4xNyBzdWJzYW1wbGVzICAgICAgICAgICAgICAgICAgIDJcbjE4IGNjX3NwZWNpZXMgICAgICAgICAgICAgICAgICAyM1xuMTkgY2NfbWl4dHVyZSAgICAgICAgICAgICAgICAgMjQwXG4yMCBjaGVtaWNhbF9uYW1lcyAgICAgICAgICAgICAgMTRcbjIxIGNjX3BsYW50aW5nX21ldGhvZHMgICAgICAgICAgNFxuMjIgY2NfdGVybWluYXRpb25fbWV0aG9kcyAgICAgICA1XG4yMyBncHNfcG9pbnRfdHlwZXMgICAgICAgICAgICAgIDBcbjI0IGNhc2hfY3JvcHMgICAgICAgICAgICAgICAgICAxMFxuMjUgY29kZXMgICAgICAgICAgICAgICAgICAgIDE3NTc2XG4yNiBzdGF0ZXMgICAgICAgICAgICAgICAgICAgICAgNTBcbjI3IHNlYXNvbnMgICAgICAgICAgICAgICAgICAgICAgMlxuMjggdGV4dHVyYWxfY2xhc3NlcyAgICAgICAgICAgIDEyXG4yOSBkZXB0aHMgICAgICAgICAgICAgICAgICAgICAgIDRcbjMwIHN1YnBsb3RzICAgICAgICAgICAgICAgICAgICAgNFxuMzEgdGV4dHVyZSAgICAgICAgICAgICAgICAgICAgMjU1XG4zMiB0aW1lcyAgICAgICAgICAgICAgICAgICAgICAgIDZcbjMzIHdlYXRoZXIgICAgICAgICAgICAgICAgMTQ5NjA2NFxuMzQgd3NlbnNvcl9hbGxvY2F0aW9uICAgICAgICAgICAwXG4zNSBmYXJtX2hpc3RvcnkgICAgICAgICAgICAgICAxMzFcbjM2IHdzZW5zb3JfZGF0YSAgICAgICAgICAgIDc4MzM4M1xuIn0= -->
+<pre><code># A tibble: 36 x 2
+   table                        n
+   &lt;chr&gt;                    &lt;dbl&gt;
+ 1 cc_families                  3
+ 2 decomp_biomass            3184
+ 3 quadrats                     0
+ 4 rows                         2
+ 5 weed_research                0
+ 6 yield_monitor                0
+ 7 in_field_biomass           246
+ 8 site_information           134
+ 9 yield                      651
+10 applied_chemicals          105
+11 producer_ids                61
+12 treatments                   2
+13 gps_locations                0
+14 soil                       982
+15 bulk_density                64
+16 chemical_families            2
+17 subsamples                   2
+18 cc_species                  23
+19 cc_mixture                 240
+20 chemical_names              14
+21 cc_planting_methods          4
+22 cc_termination_methods       5
+23 gps_point_types              0
+24 cash_crops                  10
+25 codes                    17576
+26 states                      50
+27 seasons                      2
+28 textural_classes            12
+29 depths                       4
+30 subplots                     4
+31 texture                    255
+32 times                        6
+33 weather                1496064
+34 wsensor_allocation           0
+35 farm_history               131
+36 wsensor_data            783383</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>That’s a helpful list, but that was also a mouthful of code. Let’s break it down a bit. The following is identical code, but written with intermediate variables instead of chaining with the <strong><code>%&gt;%</code></strong> (<em>pipe</em>) operator. If you’re familiar with base R instead, you could use <code>lapply</code> instead of <code>purrr::map_*</code>, but <code>{purrr}</code> handles a lot of details like output type for you. You don’t need to know <code>{purrr}</code> for the rest of this tutorial, but if you write a lot of loops, it will improve your code. The output isn’t shown below, since it’s the same as above.</p>
+<blockquote>
+<p><strong>WARNING:</strong> Pay attention to the returned type of numeric values. Computers nowadays use 64-bit processors, which means they’re able to represent very large numbers in memory. However, not all programs implement them in the same way.</p>
+<p>When we made the connection above, we specified that the Postgres data type <strong><code>BIGINT</code></strong> should be returned as regular R <strong><code>numeric</code></strong> (a.k.a. a <strong><code>double</code></strong>-precision floating point number, or 64 bits). With the scale of data we have, that won’t be a problem, as <strong><code>double</code></strong>s can hold data up to <code>1.797693e+308</code> (which you can find with <code>.Machine$double.xmax</code>). If you need exact integers, you can use <code>bigint = &quot;integer&quot;</code> when you make your database connection, but that only supports values up to <code>2147483647</code> (since they’re signed 32-bit integers).</p>
+<p>I don’t recommend using the default, which is <code>bigint = &quot;integer64&quot;</code>. This is a new class of 64-bit integers which doesn’t have full support yet, so arithmetic and subsetting can have unexpected results.</p>
+</blockquote>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgZ2V0IHRoZSBsaXN0IG9mIHRhYmxlcyBhcyBhIHZlY3RvciIsInRhYmxlcyA8LSBkYkxpc3RUYWJsZXMoY29uKSIsInRhYmxlcyIsIiIsIiMgZGlzY2FyZCB0aGUgdGFibGVzIHRoYXQgYmVnaW4gd2l0aCBcInBnXCIiLCJjbGVhbl90YWJsZXMgPC0gc3RyaW5ncjo6c3RyX3N1YnNldCh0YWJsZXMsIFwiXnBnXCIsIG5lZ2F0ZSA9IFRSVUUpIiwiY2xlYW5fdGFibGVzIiwiIiwiIyBuYW1lIHRoZSB2ZWN0b3Igc28gd2UgY2FuIGlkZW50aWZ5IGVhY2ggcm93IGxhdGVyIiwiY2xlYW5fdGFibGVzIDwtIHB1cnJyOjpzZXRfbmFtZXMoY2xlYW5fdGFibGVzKSIsImNsZWFuX3RhYmxlcyIsIiIsIiMgaGVscGVyIGZ1bmN0aW9uIHRvIGNvdW50IHJvd3MgYXMgYSBsYXp5IHF1ZXJ5IiwibnJvd3NfcmVtb3RlIDwtIGZ1bmN0aW9uKG5hbWUpIHsiLCIgICIsIiAgcmVtb3RlX3RhYmxlIDwtIHRibChjb24sIG5hbWUpICAgICAgICMgbGF6aWx5IHB1bGwgdGhlIHRhYmxlIiwiICAiLCIgIHJlbW90ZV9jb3VudCA8LSB0YWxseShyZW1vdGVfdGFibGUpICAjIGNvdW50IHRoZSByb3dzIG9uIHRoZSBEQiBzaWRlLCAiLCIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjICAgbm90IGxvY2FsbHkiLCIgICIsIiAgY29sbGVjdChyZW1vdGVfY291bnQpICAgICAgICAgICAgICAgICMgcHVsbCB0aGUgY291bnQgaW4gdG8geW91ciBsb2NhbCAiLCIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjICAgUiBlbnZpcm9ubWVudCIsIn0iLCIiLCIjIGxvb3Agb3ZlciBlYWNoIHRhYmxlIGFuZCBhcHBseSB0aGUgaGVscGVyIGZ1bmN0aW9uLCAiLCIjICAgcm93LWJpbmRpbmcgdGhlIHJlc3VsdHMgdG8gYSBzaW5nbGUgdGliYmxlL2RhdGFmcmFtZSIsInB1cnJyOjptYXBfZGZyKCIsIiAgY2xlYW5fdGFibGVzIiwiICB+bnJvd3NfcmVtb3RlKC54KSwiLCIgIC5pZCA9IFwidGFibGVcIiIsIiAgKSIsIiIsIiMgdGhlIGBwcmludCguLi4sIG49SW5mKWAganVzdCBtYWtlcyBzdXJlIGl0IHByaW50cyAiLCIjICAgYWxsIHRoZSByb3dzIHRvIHRoZSBvdXRwdXQiXX0= -->
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># get the list of tables as a vector</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">tables &lt;-<span class="st"> </span><span class="kw">dbListTables</span>(con)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">tables</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># discard the tables that begin with &quot;pg&quot;</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">clean_tables &lt;-<span class="st"> </span>stringr<span class="op">::</span><span class="kw">str_subset</span>(tables, <span class="st">&quot;^pg&quot;</span>, <span class="dt">negate =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">clean_tables</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co"># name the vector so we can identify each row later</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">clean_tables &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw">set_names</span>(clean_tables)</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">clean_tables</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co"># helper function to count rows as a lazy query</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">nrows_remote &lt;-<span class="st"> </span><span class="cf">function</span>(name) {</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">  remote_table &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, name)       <span class="co"># lazily pull the table</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb10-18" data-line-number="18">  remote_count &lt;-<span class="st"> </span><span class="kw">tally</span>(remote_table)  <span class="co"># count the rows on the DB side, </span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">                                       <span class="co">#   not locally</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20">  </a>
+<a class="sourceLine" id="cb10-21" data-line-number="21">  <span class="kw">collect</span>(remote_count)                <span class="co"># pull the count in to your local </span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22">                                       <span class="co">#   R environment</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23">}</a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co"># loop over each table and apply the helper function, </span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#   row-binding the results to a single tibble/dataframe</span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27">purrr<span class="op">::</span><span class="kw">map_dfr</span>(</a>
+<a class="sourceLine" id="cb10-28" data-line-number="28">  clean_tables</a>
+<a class="sourceLine" id="cb10-29" data-line-number="29">  <span class="op">~</span><span class="kw">nrows_remote</span>(.x),</a>
+<a class="sourceLine" id="cb10-30" data-line-number="30">  <span class="dt">.id =</span> <span class="st">&quot;table&quot;</span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31">  )</a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co"># the `print(..., n=Inf)` just makes sure it prints </span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co">#   all the rows to the output</span></a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="make-some-simple-queries" class="section level1">
+<h1><span class="header-section-number">3</span> Make some simple queries</h1>
+<p>Okay, now that we’re set up and we know some pitfalls to watch out for, let’s try a query to look at the sites enrolled. Remember, since it’s a lazy query, we don’t know how many rows there are until we <code>collect()</code> it.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGJsKGNvbiwgXCJzaXRlX2luZm9ybWF0aW9uXCIpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">tbl</span>(con, <span class="st">&quot;site_information&quot;</span>)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIyBTb3VyY2U6ICAgdGFibGU8c2l0ZV9pbmZvcm1hdGlvbj4gWz8/IHggMTFdXG4jIERhdGFiYXNlOiBwb3N0Z3Jlc1xuIyAgIFtzaGlueXVzZXJAY3Jvd25wcm9qZWN0QGNyb3ducHJvamVjdC5wb3N0Z3Jlcy5kYXRhYmFzZS51c2dvdmNsb3VkYXBpLm5ldDo1NDMyL2Nyb3duZGJdXG4gICAgIGNpZCBjb2RlICB5ZWFyICBzdGF0ZSBjb3VudHkgbG9uZ2l0dWRlIGxhdGl0dWRlIG5vdGVzXG4gICA8aW50PiA8Y2hyPiA8Y2hyPiA8Y2hyPiA8Y2hyPiAgICAgIDxkYmw+ICAgIDxkYmw+IDxjaHI+XG4gMSAgMTIyMSBDU0sgICAyMDE3ICBNRCAgICBDYXJvbOKApiAgICAgLTc1LjggICAgIDM4LjcgPE5BPiBcbiAyICAxMjIyIFRLQSAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjEgICAgIDM5LjAgPE5BPiBcbiAzICAxMjIzIFRLQyAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjEgICAgIDM4LjggPE5BPiBcbiA0ICAxMjI0IFRLRCAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjAgICAgIDM4LjcgPE5BPiBcbiA1ICAxMjI1IFRDQSAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjIgICAgIDM4LjkgPE5BPiBcbiA2ICAxMjI2IFRDQiAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjIgICAgIDM4LjggPE5BPiBcbiA3ICAxMjI3IFRDQyAgIDIwMTcgIE1EICAgIFRhbGJvdCAgICAgLTc2LjIgICAgIDM4LjggPE5BPiBcbiA4ICAxMjI4IEJHUiAgIDIwMTcgIE1EICAgIEJhbHRp4oCmICAgICAtNzYuNiAgICAgMzkuNiA8TkE+IFxuIDkgIDEyMjkgU1JaICAgMjAxNyAgUEEgICAgQmVya3MgICAgICAtNzYuMCAgICAgNDAuNSA8TkE+IFxuMTAgIDEyMzAgQ0xCICAgMjAxNyAgUEEgICAgQ2hhbWLigKYgICAgIC03Ny43ICAgICAzOS44IDxOQT4gXG4jIOKApiB3aXRoIG1vcmUgcm93cywgYW5kIDMgbW9yZSB2YXJpYWJsZXM6IGFkZGl0aW9uYWxfY29udGFjdCA8Y2hyPixcbiMgICBwcm9kdWNlcl9pZCA8Y2hyPiwgYWRkcmVzcyA8Y2hyPlxuIn0= -->
+<pre><code># Source:   table&lt;site_information&gt; [?? x 11]
+# Database: postgres
+     cid code  year  state county longitude latitude notes
+   &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;
+ 1  1221 CSK   2017  MD    Carol…     -75.8     38.7 &lt;NA&gt; 
+ 2  1222 TKA   2017  MD    Talbot     -76.1     39.0 &lt;NA&gt; 
+ 3  1223 TKC   2017  MD    Talbot     -76.1     38.8 &lt;NA&gt; 
+ 4  1224 TKD   2017  MD    Talbot     -76.0     38.7 &lt;NA&gt; 
+ 5  1225 TCA   2017  MD    Talbot     -76.2     38.9 &lt;NA&gt; 
+ 6  1226 TCB   2017  MD    Talbot     -76.2     38.8 &lt;NA&gt; 
+ 7  1227 TCC   2017  MD    Talbot     -76.2     38.8 &lt;NA&gt; 
+ 8  1228 BGR   2017  MD    Balti…     -76.6     39.6 &lt;NA&gt; 
+ 9  1229 SRZ   2017  PA    Berks      -76.0     40.5 &lt;NA&gt; 
+10  1230 CLB   2017  PA    Chamb…     -77.7     39.8 &lt;NA&gt; 
+# … with more rows, and 3 more variables: additional_contact &lt;chr&gt;,
+#   producer_id &lt;chr&gt;, address &lt;chr&gt;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Remember that this is identical to previewing <code>SELECT * FROM site_information</code> in vanilla SQL. Let’s see how many sites were enrolled in each year:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueWVhcl9kYXRhIDwtIHRibChjb24sIFwic2l0ZV9pbmZvcm1hdGlvblwiKSAlPiUgXG4gIGFycmFuZ2UoeWVhcikgJT4lIFxuICBncm91cF9ieSh5ZWFyKSAlPiUgXG4gIHRhbGx5KClcblxueWVhcl9kYXRhXG5gYGAifQ== -->
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">year_data &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">&quot;site_information&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">arrange</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(year) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">tally</span>()</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">year_data</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIyBTb3VyY2U6ICAgbGF6eSBxdWVyeSBbPz8geCAyXVxuIyBEYXRhYmFzZTogcG9zdGdyZXNcbiMgICBbc2hpbnl1c2VyQGNyb3ducHJvamVjdEBjcm93bnByb2plY3QucG9zdGdyZXMuZGF0YWJhc2UudXNnb3ZjbG91ZGFwaS5uZXQ6NTQzMi9jcm93bmRiXVxuICB5ZWFyICAgICAgblxuICA8Y2hyPiA8ZGJsPlxuMSAyMDE3ICAgICAzNlxuMiAyMDE4ICAgICA0M1xuMyAyMDE5ICAgICA1NVxuIn0= -->
+<pre><code># Source:   lazy query [?? x 2]
+# Database: postgres
+  year      n
+  &lt;chr&gt; &lt;dbl&gt;
+1 2017     36
+2 2018     43
+3 2019     55</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2hvd19xdWVyeSh5ZWFyX2RhdGEpXG5gYGAifQ== -->
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">show_query</span>(year_data)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiPFNRTD5cblNFTEVDVCBcInllYXJcIiwgQ09VTlQoKikgQVMgXCJuXCJcbkZST00gKFNFTEVDVCAqXG5GUk9NIFwic2l0ZV9pbmZvcm1hdGlvblwiXG5PUkRFUiBCWSBcInllYXJcIikgXCJkYnBseXJfMDAzXCJcbkdST1VQIEJZIFwieWVhclwiXG4ifQ== -->
+<pre><code>&lt;SQL&gt;
+SELECT &quot;year&quot;, COUNT(*) AS &quot;n&quot;
+FROM (SELECT *
+FROM &quot;site_information&quot;
+ORDER BY &quot;year&quot;) &quot;dbplyr_003&quot;
+GROUP BY &quot;year&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="and-dont-forget-to-clean-up-after" class="section level2">
+<h2><span class="header-section-number">3.1</span> And don’t forget to clean up after</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJEaXNjb25uZWN0KGNvbilcbmBgYCJ9 -->
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">dbDisconnect</span>(con)</a></code></pre></div>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMDA0IC0gSG93IHRvIHVzZSB0aGUgUFNBIERCIgpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIGhpZ2hsaWdodDogdGFuZ28KICAgIG51bWJlcl9zZWN0aW9uczogeWVzCiAgICB0aGVtZTogcmVhZGFibGUKICAgIHRvYzogeWVzCiAgICB0b2NfZmxvYXQ6IHllcwogICAgY29kZV9mb2xkaW5nOiBub25lCiAgICBpbmNsdWRlczoKICAgICAgYmVmb3JlX2JvZHk6IGFzc2V0cy9oZWFkZXIuaHRtbAogICAgICBhZnRlcl9ib2R5OiBhc3NldHMvZm9vdGVyLmh0bWwKLS0tCgoKIyMgTGlua3MgdG8gb3RoZXIgbm90ZWJvb2tzCgoxLiBbV2hhdCBpcyBhIERCP10oMDAxX1doYXRfaXNfYV9kYXRhYmFzZS5uYi5odG1sKQoyLiBbR2V0dGluZyBzdGFydGVkIHdpdGggUl0oMDAyX0dldHRpbmdfc3RhcnRlZF93aXRoX1IubmIuaHRtbCkKMy4gW0hvdyB0byB1c2UgYSBsb2NhbCBEQl0oMDAzX0hvd190b191c2VfYV9sb2NhbF9EQi5uYi5odG1sKQo0LiBbSG93IHRvIHVzZSB0aGUgUFNBIERCXSgwMDRfSG93X3RvX3VzZV90aGVfUFNBX0RCLm5iLmh0bWwpCgojIEdldHRpbmcgY3JlZGVudGlhbHMKClNvdXJjZSBmaWxlOiBbYHNlY3JldC1leGFtcGxlLlJgXShzZWNyZXQtZXhhbXBsZS5SKQoKYGBge3IgZWNobz1GQUxTRX0KY2F0KHJlYWRMaW5lcygic2VjcmV0LWV4YW1wbGUuUiIpLCBzZXAgPSAiXG4iKQpgYGAKCmBgYHtyfQpzb3VyY2UoInNlY3JldC5SIikKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMDA0IC0gSG93IHRvIHVzZSB0aGUgUFNBIERCIgpvdXRwdXQ6CiAgaHRtbF9ub3RlYm9vazoKICAgIGhpZ2hsaWdodDogdGFuZ28KICAgIG51bWJlcl9zZWN0aW9uczogeWVzCiAgICB0aGVtZTogcmVhZGFibGUKICAgIHRvYzogeWVzCiAgICB0b2NfZmxvYXQ6IHllcwogICAgY29kZV9mb2xkaW5nOiBub25lCiAgICBpbmNsdWRlczoKICAgICAgYmVmb3JlX2JvZHk6IGFzc2V0cy9oZWFkZXIuaHRtbAogICAgICBhZnRlcl9ib2R5OiBhc3NldHMvZm9vdGVyLmh0bWwKLS0tCgpgYGB7ciBlY2hvID0gRkFMU0V9Cm9wdGlvbnMoY3JheW9uLmVuYWJsZWQgPSBGQUxTRSkKYGBgCgojIyBMaW5rcyB0byBvdGhlciBub3RlYm9va3MKCjEuIFtXaGF0IGlzIGEgREI/XSgwMDFfV2hhdF9pc19hX2RhdGFiYXNlLm5iLmh0bWwpCjIuIFtHZXR0aW5nIHN0YXJ0ZWQgd2l0aCBSXSgwMDJfR2V0dGluZ19zdGFydGVkX3dpdGhfUi5uYi5odG1sKQozLiBbSG93IHRvIHVzZSBhIGxvY2FsIERCXSgwMDNfSG93X3RvX3VzZV9hX2xvY2FsX0RCLm5iLmh0bWwpCjQuIFtIb3cgdG8gdXNlIHRoZSBQU0EgREJdKDAwNF9Ib3dfdG9fdXNlX3RoZV9QU0FfREIubmIuaHRtbCkKCiMgR2V0dGluZyBjcmVkZW50aWFscwoKVG8gZm9sbG93IGFsb25nIHdpdGggdGhpcyB0dXRvcmlhbCAoYW5kIGV2ZW50dWFsbHkgdXNlIHRoZSBkYXRhYmFzZSBmb3IgcmVhbCBhbmFseXNlcykgeW91IG5lZWQgdG8gZ2V0IHRoZSBsb2dpbiBjcmVkZW50aWFscy4gUm9oaXQgaXMgdGhlIGNvbnRhY3QgcGVyc29uIGZvciB0aGF0LCBhbmQgeW91IGNhbiBzZWUgaG93IEkndmUgc3RvcmVkIHRoZW0gYmVsb3cuIEkgaGF2ZSBhIGZha2UgZmlsZSBjYWxsZWQgYHNlY3JldC1leGFtcGxlLlJgIHRoYXQncyBpbiB0aGlzIHJlcG9zaXRvcnksIHNvIHlvdSBjYW4gY29weSBpdCBhbmQgcGFzdGUgaW4geW91ciBvd24gdXNlcm5hbWUgYW5kIHBhc3N3b3JkLgoKU291cmNlIGZpbGU6IFtgc2VjcmV0LWV4YW1wbGUuUmBdKHNlY3JldC1leGFtcGxlLlIpCgpgYGB7ciBlY2hvPUZBTFNFfQpjYXQocmVhZExpbmVzKCJzZWNyZXQtZXhhbXBsZS5SIiksIHNlcCA9ICJcbiIpCmBgYAoKVGhlbiBzYXZlIGl0IGFzIGBzZWNyZXQuUmAgYW5kIHRoaXMgY29kZSBjaHVuayB3aWxsIHJ1biBpdCwgc3RvcmluZyB0aG9zZSA1IHZhcmlhYmxlcyBpbiB0aGUgZ2xvYmFsIGVudmlyb25tZW50LgoKYGBge3J9CnNvdXJjZSgic2VjcmV0LlIiKQpgYGAKCiMgVXNlIHRoZSBjcmVkZW50aWFscyB0byBjb25uZWN0CgpOb3cgd2UgY2FuIHVzZSB0aGVtIHRvIGNvbm5lY3QgdG8gdGhlIGRhdGFiYXNlOgoKYGBge3IgZWNobyA9IEZBTFNFfQojIENsZWFuIHVwIGFuIG9sZCBjb25uZWN0aW9uIGJlZm9yZSBhZGRpbmcgYSBuZXcgb25lCgppZiAoZXhpc3RzKCJjb24iKSAmJiAKICAgIGNsYXNzKGNvbikgPT0gIlBxQ29ubmVjdGlvbiIgJiYgCiAgICBEQkk6OmRiSXNWYWxpZChjb24pICYmCiAgICBEQkk6OmRiR2V0SW5mbyhjb24pJGRibmFtZSA9PSAiY3Jvd25kYiIpIHsKICBEQkk6OmRiRGlzY29ubmVjdChjb24pCiAgaW52aXNpYmxlKCkKfQpgYGAKCmBgYHtyfQpsaWJyYXJ5KGRwbHlyLCB3YXJuLmNvbmZsaWN0cyA9IEZBTFNFKQpsaWJyYXJ5KGRicGx5ciwgd2Fybi5jb25mbGljdHMgPSBGQUxTRSkKbGlicmFyeShSUG9zdGdyZXMpCgpjb24gPC0gZGJDb25uZWN0KAogIFBvc3RncmVzKCksCiAgZGJuYW1lID0gcGdfZGJuYW1lLAogIGhvc3QgPSBwZ19ob3N0LAogIHBvcnQgPSBwZ19wb3J0LAogIHVzZXIgPSBwZ191c2VyLAogIHBhc3N3b3JkID0gcGdfcGFzc3dvcmQsCiAgc3NsbW9kZSA9ICJyZXF1aXJlIiwKICBiaWdpbnQgPSAibnVtZXJpYyIKKQpgYGAKCiMjIEV4cGxvcmUgdGhlIERCCgpGaXJzdCB0aGluZywgbGV0J3MgbWFrZSBzdXJlIHRoaXMgaXMgdGhlIHJpZ2h0IGRhdGFiYXNlIGFuZCBldmVyeXRoaW5nIGxvb2tzIGNvcnJlY3QuIFdlIHNob3VsZCBzZWUgd2hhdCB0YWJsZXMgYXJlIGF2YWlsYWJsZToKCmBgYHtyfQpkYkxpc3RUYWJsZXMoY29uKQpgYGAKCkxldCdzIGxvb2sgYXQgb25lIG9mIHRoZSB0YWJsZXMsIHRoZSBsaXN0IG9mIGNvdmVyIGNyb3Agc3BlY2llczoKCmBgYHtyIHBhZ2VkLnByaW50ID0gRkFMU0V9CmRiUmVhZFRhYmxlKGNvbiwgImNjX3NwZWNpZXMiKQpgYGAKCk5vdGljZSB0aGF0IGl0IHJldHVybmVkIHRoZSB3aG9sZSB0YWJsZSwgc2luY2UgdGhpcyB3YXMgbm90IGEgbGF6eSBxdWVyeS4gRm9yIGEgc21hbGwgdGFibGUgbGlrZSB0aGlzLCB0aGF0J3Mgbm90IGEgcHJvYmxlbS4gQnV0IHNvbWUgb2YgdGhlIHRhYmxlcyBhcmUgKiptYW55Kiogcm93cy4gSWYgeW91IHRyeSB0byBwdWxsIHRoZW0gYWxsIGluIHVzaW5nIGBkYlJlYWRUYWJsZWAsIHlvdSdsbCBlbmQgdXAgd2FpdGluZyBhIHdoaWxlIGZvciBzb21lIHRhYmxlcy4KCmBgYHtyIHBhZ2VkLnByaW50ID0gRkFMU0V9CiMgVGFrZXMgfjExcyB0byByZXR1cm4KZGJMaXN0VGFibGVzKGNvbikgJT4lIAogIHN0cmluZ3I6OnN0cl9zdWJzZXQoIl5wZyIsIG5lZ2F0ZSA9IFRSVUUpICU+JSAKICBwdXJycjo6c2V0X25hbWVzKCkgJT4lIAogIHB1cnJyOjptYXBfZGZyKAogICAgfnRibChjb24sIC54KSAlPiUgCiAgICAgIHRhbGx5KCkgJT4lIAogICAgICBjb2xsZWN0KCksCiAgICAuaWQgPSAidGFibGUiCiAgICApICU+JQogIHByaW50KG4gPSBJbmYpCmBgYAoKVGhhdCdzIGEgaGVscGZ1bCBsaXN0LCBidXQgdGhhdCB3YXMgYWxzbyBhIG1vdXRoZnVsIG9mIGNvZGUuIExldCdzIGJyZWFrIGl0IGRvd24gYSBiaXQuIFRoZSBmb2xsb3dpbmcgaXMgaWRlbnRpY2FsIGNvZGUsIGJ1dCB3cml0dGVuIHdpdGggaW50ZXJtZWRpYXRlIHZhcmlhYmxlcyBpbnN0ZWFkIG9mIGNoYWluaW5nIHdpdGggdGhlICoqYCU+JWAqKiAoKnBpcGUqKSBvcGVyYXRvci4gSWYgeW91J3JlIGZhbWlsaWFyIHdpdGggYmFzZSBSIGluc3RlYWQsIHlvdSBjb3VsZCB1c2UgYGxhcHBseWAgaW5zdGVhZCBvZiBgcHVycnI6Om1hcF8qYCwgYnV0IGB7cHVycnJ9YCBoYW5kbGVzIGEgbG90IG9mIGRldGFpbHMgbGlrZSBvdXRwdXQgdHlwZSBmb3IgeW91LiBZb3UgZG9uJ3QgbmVlZCB0byBrbm93IGB7cHVycnJ9YCBmb3IgdGhlIHJlc3Qgb2YgdGhpcyB0dXRvcmlhbCwgYnV0IGlmIHlvdSB3cml0ZSBhIGxvdCBvZiBsb29wcywgaXQgd2lsbCBpbXByb3ZlIHlvdXIgY29kZS4gVGhlIG91dHB1dCBpc24ndCBzaG93biBiZWxvdywgc2luY2UgaXQncyB0aGUgc2FtZSBhcyBhYm92ZS4KCj4gKipXQVJOSU5HOioqIFBheSBhdHRlbnRpb24gdG8gdGhlIHJldHVybmVkIHR5cGUgb2YgbnVtZXJpYyB2YWx1ZXMuIENvbXB1dGVycyBub3dhZGF5cyB1c2UgNjQtYml0IHByb2Nlc3NvcnMsIHdoaWNoIG1lYW5zIHRoZXkncmUgYWJsZSB0byByZXByZXNlbnQgdmVyeSBsYXJnZSBudW1iZXJzIGluIG1lbW9yeS4gSG93ZXZlciwgbm90IGFsbCBwcm9ncmFtcyBpbXBsZW1lbnQgdGhlbSBpbiB0aGUgc2FtZSB3YXkuIAo+Cj4gV2hlbiB3ZSBtYWRlIHRoZSBjb25uZWN0aW9uIGFib3ZlLCB3ZSBzcGVjaWZpZWQgdGhhdCB0aGUgUG9zdGdyZXMgZGF0YSB0eXBlICoqYEJJR0lOVGAqKiBzaG91bGQgYmUgcmV0dXJuZWQgYXMgcmVndWxhciBSICoqYG51bWVyaWNgKiogKGEuay5hLiBhICoqYGRvdWJsZWAqKi1wcmVjaXNpb24gZmxvYXRpbmcgcG9pbnQgbnVtYmVyLCBvciA2NCBiaXRzKS4gV2l0aCB0aGUgc2NhbGUgb2YgZGF0YSB3ZSBoYXZlLCB0aGF0IHdvbid0IGJlIGEgcHJvYmxlbSwgYXMgKipgZG91YmxlYCoqcyBjYW4gaG9sZCBkYXRhIHVwIHRvIGAxLjc5NzY5M2UrMzA4YCAod2hpY2ggeW91IGNhbiBmaW5kIHdpdGggYC5NYWNoaW5lJGRvdWJsZS54bWF4YCkuIElmIHlvdSBuZWVkIGV4YWN0IGludGVnZXJzLCB5b3UgY2FuIHVzZSBgYmlnaW50ID0gImludGVnZXIiYCB3aGVuIHlvdSBtYWtlIHlvdXIgZGF0YWJhc2UgY29ubmVjdGlvbiwgYnV0IHRoYXQgb25seSBzdXBwb3J0cyB2YWx1ZXMgdXAgdG8gYDIxNDc0ODM2NDdgIChzaW5jZSB0aGV5J3JlIHNpZ25lZCAzMi1iaXQgaW50ZWdlcnMpLiAKPgo+IEkgZG9uJ3QgcmVjb21tZW5kIHVzaW5nIHRoZSBkZWZhdWx0LCB3aGljaCBpcyBgYmlnaW50ID0gImludGVnZXI2NCJgLiBUaGlzIGlzIGEgbmV3IGNsYXNzIG9mIDY0LWJpdCBpbnRlZ2VycyB3aGljaCBkb2Vzbid0IGhhdmUgZnVsbCBzdXBwb3J0IHlldCwgc28gYXJpdGhtZXRpYyBhbmQgc3Vic2V0dGluZyBjYW4gaGF2ZSB1bmV4cGVjdGVkIHJlc3VsdHMuCgpgYGB7ciBldmFsID0gRkFMU0UsIHBhZ2VkLnByaW50ID0gRkFMU0V9CiMgZ2V0IHRoZSBsaXN0IG9mIHRhYmxlcyBhcyBhIHZlY3Rvcgp0YWJsZXMgPC0gZGJMaXN0VGFibGVzKGNvbikKdGFibGVzCgojIGRpc2NhcmQgdGhlIHRhYmxlcyB0aGF0IGJlZ2luIHdpdGggInBnIgpjbGVhbl90YWJsZXMgPC0gc3RyaW5ncjo6c3RyX3N1YnNldCh0YWJsZXMsICJecGciLCBuZWdhdGUgPSBUUlVFKQpjbGVhbl90YWJsZXMKCiMgbmFtZSB0aGUgdmVjdG9yIHNvIHdlIGNhbiBpZGVudGlmeSBlYWNoIHJvdyBsYXRlcgpjbGVhbl90YWJsZXMgPC0gcHVycnI6OnNldF9uYW1lcyhjbGVhbl90YWJsZXMpCmNsZWFuX3RhYmxlcwoKIyBoZWxwZXIgZnVuY3Rpb24gdG8gY291bnQgcm93cyBhcyBhIGxhenkgcXVlcnkKbnJvd3NfcmVtb3RlIDwtIGZ1bmN0aW9uKG5hbWUpIHsKICAKICByZW1vdGVfdGFibGUgPC0gdGJsKGNvbiwgbmFtZSkgICAgICAgIyBsYXppbHkgcHVsbCB0aGUgdGFibGUKICAKICByZW1vdGVfY291bnQgPC0gdGFsbHkocmVtb3RlX3RhYmxlKSAgIyBjb3VudCB0aGUgcm93cyBvbiB0aGUgREIgc2lkZSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgICBub3QgbG9jYWxseQogIAogIGNvbGxlY3QocmVtb3RlX2NvdW50KSAgICAgICAgICAgICAgICAjIHB1bGwgdGhlIGNvdW50IGluIHRvIHlvdXIgbG9jYWwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgICBSIGVudmlyb25tZW50Cn0KCiMgbG9vcCBvdmVyIGVhY2ggdGFibGUgYW5kIGFwcGx5IHRoZSBoZWxwZXIgZnVuY3Rpb24sIAojICAgcm93LWJpbmRpbmcgdGhlIHJlc3VsdHMgdG8gYSBzaW5nbGUgdGliYmxlL2RhdGFmcmFtZQpwdXJycjo6bWFwX2RmcigKICBjbGVhbl90YWJsZXMKICB+bnJvd3NfcmVtb3RlKC54KSwKICAuaWQgPSAidGFibGUiCiAgKQoKIyB0aGUgYHByaW50KC4uLiwgbj1JbmYpYCBqdXN0IG1ha2VzIHN1cmUgaXQgcHJpbnRzIAojICAgYWxsIHRoZSByb3dzIHRvIHRoZSBvdXRwdXQKYGBgCgojIE1ha2Ugc29tZSBzaW1wbGUgcXVlcmllcwoKT2theSwgbm93IHRoYXQgd2UncmUgc2V0IHVwIGFuZCB3ZSBrbm93IHNvbWUgcGl0ZmFsbHMgdG8gd2F0Y2ggb3V0IGZvciwgbGV0J3MgdHJ5IGEgcXVlcnkgdG8gbG9vayBhdCB0aGUgc2l0ZXMgZW5yb2xsZWQuIFJlbWVtYmVyLCBzaW5jZSBpdCdzIGEgbGF6eSBxdWVyeSwgd2UgZG9uJ3Qga25vdyBob3cgbWFueSByb3dzIHRoZXJlIGFyZSB1bnRpbCB3ZSBgY29sbGVjdCgpYCBpdC4KCmBgYHtyIHBhZ2VkLnByaW50ID0gRkFMU0V9CnRibChjb24sICJzaXRlX2luZm9ybWF0aW9uIikKYGBgCgpSZW1lbWJlciB0aGF0IHRoaXMgaXMgaWRlbnRpY2FsIHRvIHByZXZpZXdpbmcgYFNFTEVDVCAqIEZST00gc2l0ZV9pbmZvcm1hdGlvbmAgaW4gdmFuaWxsYSBTUUwuIExldCdzIHNlZSBob3cgbWFueSBzaXRlcyB3ZXJlIGVucm9sbGVkIGluIGVhY2ggeWVhcjoKCmBgYHtyIHBhZ2VkLnByaW50ID0gRkFMU0V9CnllYXJfZGF0YSA8LSB0YmwoY29uLCAic2l0ZV9pbmZvcm1hdGlvbiIpICU+JSAKICBhcnJhbmdlKHllYXIpICU+JSAKICBncm91cF9ieSh5ZWFyKSAlPiUgCiAgdGFsbHkoKQoKeWVhcl9kYXRhCgpzaG93X3F1ZXJ5KHllYXJfZGF0YSkKYGBgCgojIyBBbmQgZG9uJ3QgZm9yZ2V0IHRvIGNsZWFuIHVwIGFmdGVyCgpgYGB7cn0KZGJEaXNjb25uZWN0KGNvbikKYGBgCg==</div>
 <div>
   <hr />
   <h2 style="text-align: center;">

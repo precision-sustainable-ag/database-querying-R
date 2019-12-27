@@ -13,6 +13,9 @@ output:
       after_body: assets/footer.html
 ---
 
+```{r echo = FALSE}
+options(crayon.enabled = FALSE)
+```
 
 ## Links to other notebooks
 
@@ -47,6 +50,9 @@ There are additional benefits to using a structured relational database:
  * Each table has a "key" that connects an observation between tables
  * Keys can map one row to another row, or many rows to one row, or vice versa
  * Planning a structure (schema) helps you decide how to organize your data
+ 
+Are there downsides to using a database?
+ * You have to learn how to use them, by reading this tutorial
 
 ## Example
 Let's look at a toy database with two tables:
@@ -72,7 +78,7 @@ yields
 ```
 If you were making a spreadsheet of yields, you would probably want all of this in one table, so you could associate each observation with the treatments. But I'm sure you've noticed that copy-pasting columns of treatments inevitably ends up with some errors that you have to go back and clean up. Then when you want to have another observation type, like cover crop biomass or ground cover or weed count, you have to do it all over again.
 
-With a database, instead you record the minimally identifiable information, like `plot_id` and the observation. Then once all your data is recorded and stored and cleaned, you can **join** tables together for your analyses. Note that here we're using `plot_id` as our key. That's how we know which row from one table is connected to a row from another table. 
+With a database, instead you record the minimally identifiable information, like `plot_id` and the observation. Then once all your data is recorded and stored and cleaned, you can **join** tables together for your analyses. Note that here we're using `plot_id` as our **key**. That's how we know which row from one table is connected to a row from another table. 
 
 This sort of structure is especially helpful where information from one table would need to be repeated many times. Imagine an experiment with 3 or 4 columns of treatment variables, and then a table of sensor readings every 15 minutes for a year (~35000 rows per plot!). You'd have a lot of duplicated information, and any mistakes (misspelling, miscoding treatments, rows out of order) would break the whole thing.
 

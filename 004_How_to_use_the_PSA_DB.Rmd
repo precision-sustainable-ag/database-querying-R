@@ -13,6 +13,9 @@ output:
       after_body: assets/footer.html
 ---
 
+```{r echo = FALSE}
+options(crayon.enabled = FALSE)
+```
 
 ## Links to other notebooks
 
@@ -23,13 +26,151 @@ output:
 
 # Getting credentials
 
+To follow along with this tutorial (and eventually use the database for real analyses) you need to get the login credentials. Rohit is the contact person for that, and you can see how I've stored them below. I have a fake file called `secret-example.R` that's in this repository, so you can copy it and paste in your own username and password.
+
 Source file: [`secret-example.R`](secret-example.R)
 
 ```{r echo=FALSE}
 cat(readLines("secret-example.R"), sep = "\n")
 ```
 
+Then save it as `secret.R` and this code chunk will run it, storing those 5 variables in the global environment.
+
 ```{r}
 source("secret.R")
 ```
 
+# Use the credentials to connect
+
+Now we can use them to connect to the database:
+
+```{r echo = FALSE}
+# Clean up an old connection before adding a new one
+
+if (exists("con") && 
+    class(con) == "PqConnection" && 
+    DBI::dbIsValid(con) &&
+    DBI::dbGetInfo(con)$dbname == "crowndb") {
+  DBI::dbDisconnect(con)
+  invisible()
+}
+```
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+library(dbplyr, warn.conflicts = FALSE)
+library(RPostgres)
+
+con <- dbConnect(
+  Postgres(),
+  dbname = pg_dbname,
+  host = pg_host,
+  port = pg_port,
+  user = pg_user,
+  password = pg_password,
+  sslmode = "require",
+  bigint = "numeric"
+)
+```
+
+## Explore the DB
+
+First thing, let's make sure this is the right database and everything looks correct. We should see what tables are available:
+
+```{r}
+dbListTables(con)
+```
+
+Let's look at one of the tables, the list of cover crop species:
+
+```{r paged.print = FALSE}
+dbReadTable(con, "cc_species")
+```
+
+Notice that it returned the whole table, since this was not a lazy query. For a small table like this, that's not a problem. But some of the tables are **many** rows. If you try to pull them all in using `dbReadTable`, you'll end up waiting a while for some tables.
+
+```{r paged.print = FALSE}
+# Takes ~11s to return
+dbListTables(con) %>% 
+  stringr::str_subset("^pg", negate = TRUE) %>% 
+  purrr::set_names() %>% 
+  purrr::map_dfr(
+    ~tbl(con, .x) %>% 
+      tally() %>% 
+      collect(),
+    .id = "table"
+    ) %>%
+  print(n = Inf)
+```
+
+That's a helpful list, but that was also a mouthful of code. Let's break it down a bit. The following is identical code, but written with intermediate variables instead of chaining with the **`%>%`** (*pipe*) operator. If you're familiar with base R instead, you could use `lapply` instead of `purrr::map_*`, but `{purrr}` handles a lot of details like output type for you. You don't need to know `{purrr}` for the rest of this tutorial, but if you write a lot of loops, it will improve your code. The output isn't shown below, since it's the same as above.
+
+> **WARNING:** Pay attention to the returned type of numeric values. Computers nowadays use 64-bit processors, which means they're able to represent very large numbers in memory. However, not all programs implement them in the same way. 
+>
+> When we made the connection above, we specified that the Postgres data type **`BIGINT`** should be returned as regular R **`numeric`** (a.k.a. a **`double`**-precision floating point number, or 64 bits). With the scale of data we have, that won't be a problem, as **`double`**s can hold data up to `1.797693e+308` (which you can find with `.Machine$double.xmax`). If you need exact integers, you can use `bigint = "integer"` when you make your database connection, but that only supports values up to `2147483647` (since they're signed 32-bit integers). 
+>
+> I don't recommend using the default, which is `bigint = "integer64"`. This is a new class of 64-bit integers which doesn't have full support yet, so arithmetic and subsetting can have unexpected results.
+
+```{r eval = FALSE, paged.print = FALSE}
+# get the list of tables as a vector
+tables <- dbListTables(con)
+tables
+
+# discard the tables that begin with "pg"
+clean_tables <- stringr::str_subset(tables, "^pg", negate = TRUE)
+clean_tables
+
+# name the vector so we can identify each row later
+clean_tables <- purrr::set_names(clean_tables)
+clean_tables
+
+# helper function to count rows as a lazy query
+nrows_remote <- function(name) {
+  
+  remote_table <- tbl(con, name)       # lazily pull the table
+  
+  remote_count <- tally(remote_table)  # count the rows on the DB side, 
+                                       #   not locally
+  
+  collect(remote_count)                # pull the count in to your local 
+                                       #   R environment
+}
+
+# loop over each table and apply the helper function, 
+#   row-binding the results to a single tibble/dataframe
+purrr::map_dfr(
+  clean_tables
+  ~nrows_remote(.x),
+  .id = "table"
+  )
+
+# the `print(..., n=Inf)` just makes sure it prints 
+#   all the rows to the output
+```
+
+# Make some simple queries
+
+Okay, now that we're set up and we know some pitfalls to watch out for, let's try a query to look at the sites enrolled. Remember, since it's a lazy query, we don't know how many rows there are until we `collect()` it.
+
+```{r paged.print = FALSE}
+tbl(con, "site_information")
+```
+
+Remember that this is identical to previewing `SELECT * FROM site_information` in vanilla SQL. Let's see how many sites were enrolled in each year:
+
+```{r paged.print = FALSE}
+year_data <- tbl(con, "site_information") %>% 
+  arrange(year) %>% 
+  group_by(year) %>% 
+  tally()
+
+year_data
+
+show_query(year_data)
+```
+
+## And don't forget to clean up after
+
+```{r}
+dbDisconnect(con)
+```
