@@ -224,7 +224,7 @@ leaflet(
   addMarkers()
 ```
 
-# Joining 2 tables
+# Joining two tables
 
 So we explored the most important table, **`"site_information"`**. It's important, because it keys the three letter farm codes to all the other data about each farm. What about **`"decomp_biomass"`**? That's all the data about the litterbag decomposition study, and it's where dry weight of the cover crop biomass is stored.
 
