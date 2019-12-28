@@ -342,7 +342,7 @@ Let's try an example with three tables. I'll split it up into several separate q
 1. We'll use the **`decomp_biomass`** table to estimate moisture content for bags at **`time == 0`** (first collection). 
 2. Then we'll join it to the **`in_field_biomass`** table and calculate dry equivalents of the fresh biomass there. 
 3. Then we'll join it back to the **`site_information`** table to get state and year information.
-4. Then we'll convert the percent-quality columns into total **grams/meter^2** units.
+4. Then we'll convert the percent-quality columns into total $grams/meter^{2}$ units.
 5. Finally we'll pull the query in locally and do some visualization and analysis.
 
 ## Moisture content estimates
@@ -379,7 +379,7 @@ in_field_query
 
 The first query (**`bag_moisture_query`**) constructed a temporary table inside the database. Now we're telling the DB we want to do a full (or outer) join on that temporary table and the **`in_field_biomass`** table (containing all matches between rows, and every column in both tables). Since we constructed the temporary table to only have three columns (**`code`**, **`subplot`**, and **`m_ratio`**), we don't have to worry about specifying which columns to join on: we should get perfect 1:1 matching on **`code`** and **`subplot`**. A helpful message is printed letting us know those are the common columns.
 
-After the join, we then make a new column in this new temporary table. The new column is the average of the two subsamples of fresh weights, times the moisture ratio we calculated before. Again, simple arithmetic operations like this are easy for the database to do internally. Now we have a temporary table with all the biomass properties, including an estimate of dry matter content in **grams/meter^2**.
+After the join, we then make a new column in this new temporary table. The new column is the average of the two subsamples of fresh weights, times the moisture ratio we calculated before. Again, simple arithmetic operations like this are easy for the database to do internally. Now we have a temporary table with all the biomass properties, including an estimate of dry matter content in $grams/meter^{2}$.
 
 ## Combine with site info
 
@@ -408,7 +408,7 @@ biomass_with_units_query <- biomass_with_site_query %>%
 show_query(biomass_with_units_query)
 ```
 
-The last step is to create new columns using an "anonymous function": **`~.*dry_wt_est_g_m2`**. This is the same thing as a function that looks like `multiplier <- function(x) { x * dry_wt_est_g_m2 }`. We then use that function on all the variables/columns (**`vars()`**) that match the text **`"percent_"`**. For every such column, it will now make a new column with the name **`percent_foo_g_m2`**, which will be the total amount of "foo" in **grams/meter^2**. 
+The last step is to create new columns using an "anonymous function": **`~.*dry_wt_est_g_m2`**. This is the same thing as a function that looks like `multiplier <- function(x) { x * dry_wt_est_g_m2 }`. We then use that function on all the variables/columns (**`vars()`**) that match the text **`"percent_"`**. For every such column, it will now make a new column with the name **`percent_foo_g_m2`**, which will be the total amount of "foo" in $grams/meter^{2}$. 
 
 You can also see I printed out the generated SQL query, since this is still all happening inside the database. You could have pulled the query in locally at a number of points during this chain, and the `{dplyr}` syntax would have been identical (the calls to **`filter`, `mutate`, `summarize`, `group_by`, `full_join`**); just the calls to **`tbl(con, "table_name")`** would have been your local variables instead.
 
