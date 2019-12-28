@@ -67,6 +67,8 @@ The `con` object we just created is important. It's how R knows where and how to
 
 > You can always make new connections to a database, but either your DB or R will crash if you run out of memory. This is very unlikely to happen in normal usage (both can handle **millions** of connections concurrently), but it's a good idea to close a connection you opened after your script is done: `dbDisconnect(con)`
 
+> **NOTE:** Connection objects contain pointers to memory addresses, so you can't save them in your R environment for later, or save them to disk. Every time you restart R or open a new R session, you have to make a new connection at the top of your script.
+
 Now we have an empty database, stored in a file in our working directory. 
 
 # Load data into DB

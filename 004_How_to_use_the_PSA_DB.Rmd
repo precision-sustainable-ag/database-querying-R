@@ -73,6 +73,14 @@ con <- dbConnect(
 )
 ```
 
+> **NOTE:** Remember to close connections with `dbDisconnect(con)` at the end of your R script, but occasionally your connection will be reset without you doing it explicitly. That could be that the DB thought you were inactive, or a number of other reasons (like your WiFi is spotty). If you find that queries time out or are not responding, just reconnect using this chunk of code.
+
+> **WARNING:** Pay attention to the returned type of numeric values. Computers nowadays use 64-bit processors, which means they're able to represent very large numbers in memory. However, not all programs implement them in the same way. 
+>
+> When we made the connection above, we specified that the Postgres data type **`BIGINT`** should be returned as regular R **`numeric`** (a.k.a. a **`double`**-precision floating point number, or 64 bits). With the scale of data we have, that won't be a problem, as **`double`**s can hold data up to `1.797693e+308` (which you can find with `.Machine$double.xmax`). If you need exact integers, you can use `bigint = "integer"` when you make your database connection, but that only supports values up to `2147483647` (since they're signed 32-bit integers). 
+>
+> I don't recommend using the default, which is `bigint = "integer64"`. This is a new class of 64-bit integers which doesn't have full support yet, so arithmetic and subsetting can have unexpected results.
+
 ## Explore the DB
 
 First thing, let's make sure this is the right database and everything looks correct. We should see what tables are available:
@@ -104,12 +112,6 @@ dbListTables(con) %>%
 ```
 
 That's a helpful list, but that was also a mouthful of code. Let's break it down a bit. The following is identical code, but written with intermediate variables instead of chaining with the **`%>%`** (*pipe*) operator. If you're familiar with base R instead, you could use `lapply` instead of `purrr::map_*`, but `{purrr}` handles a lot of details like output type for you. You don't need to know `{purrr}` for the rest of this tutorial, but if you write a lot of loops, it will improve your code. The output isn't shown below, since it's the same as above.
-
-> **WARNING:** Pay attention to the returned type of numeric values. Computers nowadays use 64-bit processors, which means they're able to represent very large numbers in memory. However, not all programs implement them in the same way. 
->
-> When we made the connection above, we specified that the Postgres data type **`BIGINT`** should be returned as regular R **`numeric`** (a.k.a. a **`double`**-precision floating point number, or 64 bits). With the scale of data we have, that won't be a problem, as **`double`**s can hold data up to `1.797693e+308` (which you can find with `.Machine$double.xmax`). If you need exact integers, you can use `bigint = "integer"` when you make your database connection, but that only supports values up to `2147483647` (since they're signed 32-bit integers). 
->
-> I don't recommend using the default, which is `bigint = "integer64"`. This is a new class of 64-bit integers which doesn't have full support yet, so arithmetic and subsetting can have unexpected results.
 
 ```{r eval = FALSE, paged.print = FALSE}
 # get the list of tables as a vector
@@ -167,6 +169,219 @@ year_data <- tbl(con, "site_information") %>%
 year_data
 
 show_query(year_data)
+```
+
+What about if we wanted to store a list of the site codes and what state and year they were enrolled in?
+
+```{r paged.print = FALSE}
+site_list <- tbl(con, "site_information") %>% 
+  select(year, state, code, latitude, longitude) %>% 
+  arrange(year, state, code) %>% 
+  collect()
+
+site_list
+```
+
+Now you could do any local computation or manipulation you wanted. My rule of thumb is that if it's one of the common operations (**`select`**ing columns, **`arrange`**ing to sort, **`filter`**ing rows, **`*_join`**ing two tables), go ahead and do those with lazy queries. If you have more complex operations you want to do, it might be better to pull the table in locally with **`collect()`**. Again, it's a good idea to check how many rows will be returned before you do that though:
+
+```{r paged.print = FALSE}
+tbl(con, "site_information") %>% 
+  select(year, state, code, latitude, longitude) %>% 
+  arrange(year, state, code) %>% 
+  tally()
+```
+
+## Mapping the sites
+
+So let's do some local computation on the **`site_list`** object we just stored. First we'll make a static map using the `{ggplot2}` package, which is good for making high quality customizable images. Then we'll make an interactive map with `{leaflet}`, a JavaScript package that embeds maps in documents like these or web applications. 
+
+We won't fuss around too much with the options in either, but both are powerful enough to do any kind of mapping visualization you can imagine. You don't need any of the other packages I'm using here if you aren't making maps, but they're handy to have if you are.
+
+```{r paged.print = FALSE}
+state_outlines <- 
+  rnaturalearthdata::states50 %>% 
+  sf::st_as_sf() %>% 
+  filter(sr_adm0_a3 == "USA")
+
+library(ggplot2)
+ggplot() + 
+  geom_sf(data = state_outlines) +
+  geom_point(
+    data = site_list, 
+    aes(longitude, latitude, color = year)
+    ) +
+  coord_sf(
+    xlim = range(site_list$longitude, na.rm = TRUE),
+    ylim = range(site_list$latitude, na.rm = TRUE)
+  )
+
+library(leaflet)
+leaflet(
+  site_list,
+  options = leafletOptions(maxZoom = 6)
+  ) %>% 
+  addTiles() %>% 
+  addMarkers()
+```
+
+## Joining multiple tables
+
+So we explored the most important table, **`"site_information"`**. It's important, because it keys the three letter farm codes to all the other data about each farm. What about **`"decomp_biomass"`**? That's all the data about the litterbag decomposition study, and it's where dry weight of the cover crop biomass is stored.
+
+```{r paged.print = FALSE}
+tbl(con, "decomp_biomass")
+```
+
+But it only has the farm codes, so we need to join it with the site information table. What kind of join is appropriate? In the decomp data, there are multiple rows per farm code (24 if no bags got destroyed), and farm code is the only key that connects the two tables. This is called a one-to-many correspondence.
+
+```{r paged.print = FALSE}
+tbl(con, "decomp_biomass") %>% 
+  group_by(code) %>% 
+  tally()
+
+tbl(con, "site_information") %>% 
+  group_by(code) %>% 
+  tally()
+```
+
+Assuming we join them with **`"site_information"`** as the "left" table and **`"decomp_biomass"`** as the "right" table:
+
+* A **`left_join()`** would return 
+  + all the columns in both tables
+  + only ONE row per code
+* A **`right_join`** would return 
+  + all the columns in both tables
+  + all the rows from the decomp table
+    + including rows with **no match** in the site info table (`NA`s for lat/long etc)
+* An **`inner_join()`** would return
+  + all the columns in both tables
+  + MATCHING rows from both tables 
+    + (no `NA`s)
+* An **`outer_join()`** would return
+  + all the columns in both tables
+  + ALL rows from both tables 
+    + (`NA`s in lat/long & as `NA`s in dry weight)
+* A **`semi_join`** would return
+  + only columns from site info
+  + one row per code in the site info table 
+    + (the first match from decomp table, no `NA`s)
+* An **`anti_join`** would return
+  + only columns from site info
+  + ONE row per code where there's NO MATCH in decomp data
+  +   (useful for finding all the mismatches/`NA`s)
+
+I almost always want a **`full_join`**, so I can make sure I catch any mismatches and investigate them. A **`right_join`** is also good for "one-to-many" correspondences, as well as an **`inner_join`**. Beware of the dropped observations with inner joins; however, those rows would be "unidentifiable" because of missing data, so you'd end up dropping them in your analysis anyway. It's just something to keep in mind.
+
+```{r paged.print = FALSE}
+colnames(tbl(con, "site_information"))
+colnames(tbl(con, "decomp_biomass"))
+```
+
+> **WARNING:** Always look at what columns joins are matching on if you're not specifying them manually. For example, both of these tables share the **`code`** column (which we want) as well as the **`cid`** column (which is an internal DB identifier). If we let it join on the **`cid`** column, we're gonna have trouble, since they won't ever match.
+
+```{r paged.print = FALSE}
+inner_join(
+  tbl(con, "site_information"),
+  tbl(con, "decomp_biomass"),
+  by = "code"     # this forces it to only use the `code` col for matching
+)
+```
+
+Notice that now there's **`cid.x`** and **`cid.y`**, which are from the left and right tables respectively and don't match each other. This query returns way too many columns, so let's simplify the data so it's easier to look at:
+
+```{r paged.print = FALSE}
+bag_data <- inner_join(
+  tbl(con, "site_information"),
+  tbl(con, "decomp_biomass"),
+  by = "code"
+) %>% 
+  select(
+    code, year, state,          # vars to identify the site
+    subplot, subsample, time,   # vars to identify the bag
+    dry_biomass_wt, percent_n   # actual data we want
+    )
+
+show_query(bag_data)
+
+bag_data
+```
+
+That nasty SQL statement could be simplified to:
+
+```{r eval = FALSE, paged.print = FALSE}
+dbGetQuery(con, 
+  "
+  SELECT LHS.code, year, state, time, dry_biomass_wt, percent_n
+    FROM site_information AS LHS
+    INNER JOIN decomp_biomass AS RHS
+    ON (LHS.code = RHS.code)
+  ")
+```
+
+But again, that would return the whole query at once, instead of lazily, so if you want to iterate over different versions of your query for testing, it can be slow and eat up memory. All the explicit naming and quoting that `{dbplyr}` is doing when it translates to SQL prevents a lot of errors, but if your hand-written SQL is better than mine, you can use it straight instead.
+
+Let's look at rows that have already had the bags run on the C:N analyzer to get %N content:
+
+```{r paged.print = FALSE}
+n_data <- bag_data %>% 
+  filter(!is.na(percent_n)) %>% 
+  collect()
+
+n_data
+
+ggplot(n_data, aes(time, percent_n, group = time)) +
+  geom_boxplot()
+```
+
+Let's try an example with three tables. We'll use the decomp table to estimate moisture content for bags at **`time == 0`** (first collection). Then we'll join it to the in-field biomass table and calculate dry equivalents of the fresh biomass there. Then we'll join it back to the site info table to analyze it.
+
+```{r paged.print = FALSE}
+
+bag_moisture_query <- tbl(con, "decomp_biomass") %>% 
+  filter(time == 0) %>% 
+  mutate(m_factor = dry_biomass_wt / fresh_biomass_wt) %>% 
+  group_by(code, subplot) %>% 
+  summarize(m_factor = mean(m_factor, na.rm = TRUE))
+
+bag_moisture_query
+
+in_field_query <- full_join(
+  bag_moisture_query,
+  tbl(con, "in_field_biomass")
+  ) %>% 
+  mutate(
+    dry_wt_est_g_m2 = m_factor * (fresh_wt_a + fresh_wt_b) / 2
+    )
+
+in_field_query
+
+biomass_with_site_query <- full_join(
+  tbl(con, "site_information"),
+  in_field_query,
+  by = "code"
+)
+
+biomass_with_site_query
+```
+
+```{r paged.print = FALSE}
+biomass_with_units_query <- biomass_with_site_query %>% 
+  mutate_at(
+    vars(matches("percent_")), 
+    list("g_m2" = ~.*dry_wt_est_g_m2)
+    )
+
+# If you want to see a real mouthful, show the underlying SQL call
+show_query(biomass_with_units_query)
+
+summarized_biomass <- biomass_with_units_query %>% 
+  arrange(year, state) %>% 
+  group_by(year, state) %>% 
+  summarise_at(
+    vars(matches("m2$")), 
+    list(~mean(., na.rm = TRUE))
+    ) %>% 
+  collect()
 ```
 
 ## And don't forget to clean up after
