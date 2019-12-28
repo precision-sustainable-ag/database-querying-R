@@ -63,9 +63,9 @@ library(RSQLite)
 con <- dbConnect(SQLite(), "./experiment.db")
 ```
 
-The `con` object we just created is important. It's how R knows where and how to send SQL queries, and how to process the data that gets returned back from them.
+The **`con`** object we just created is important. It's how R knows where and how to send SQL queries, and how to process the data that gets returned back from them.
 
-> You can always make new connections to a database, but either your DB or R will crash if you run out of memory. This is very unlikely to happen in normal usage (both can handle **millions** of connections concurrently), but it's a good idea to close a connection you opened after your script is done: `dbDisconnect(con)`
+> You can always make new connections to a database, but either your DB or R will crash if you run out of memory. This is very unlikely to happen in normal usage (both can handle **millions** of connections concurrently), but it's a good idea to close a connection you opened after your script is done: **`dbDisconnect(con)`**
 
 > **NOTE:** Connection objects contain pointers to memory addresses, so you can't save them in your R environment for later, or save them to disk. Every time you restart R or open a new R session, you have to make a new connection at the top of your script.
 
@@ -94,7 +94,11 @@ yields <- data.frame(
 ```
 ## Pure SQL from R
 
-You can run arbitrary SQL from R using `dbExecute()`. First you need to make a statement that creates a table (called `CREATE TABLE`, which is nice and easy). Then you need a statement to `INSERT INTO` that table sets of `VALUES`. Finally you can check your work with `dbGetQuery()` to see what was written.
+You can run arbitrary SQL from R using **`dbExecute`**. 
+
+* First you need to make a statement that creates a table (called `CREATE TABLE`, which is nice and easy). Note that when you make each column, you have to decide what data type goes in there, and different DBs support different data types. 
+* Then you need a statement to `INSERT INTO` that table sets of `VALUES`. 
+* Finally you can check your work with **`dbGetQuery`** to see what was written.
 
 ```{r paged.print=FALSE}
 dbExecute(
@@ -136,7 +140,7 @@ dbWriteTable(con, "yields", yields)
 dbReadTable(con, "yields")
 ```
 
-`dbWriteTable` did all the work of converting the dataframes into those long SQL statements, then sent and executed the query. If you want to reset the database back to the beginning to try running these again, you should run `dbRemoveTable(con, "treatments")` and `dbRemoveTable(con, "yields")`
+**`dbWriteTable`** did all the work of converting the dataframes into those long SQL statements, then sent and executed the query. If you want to reset the database back to the beginning to try running these again, you should run **`dbRemoveTable(con, "treatments")`** and **`dbRemoveTable(con, "yields")`**
 
 
 # Get list of tables
@@ -188,7 +192,11 @@ library(dbplyr, warn.conflicts = FALSE)
 tbl(con, "treatments")
 ```
 
-Notice at the top, it says `table<treatments> [?? x 3]`? We actually know there are only those 8 rows, but the database could have millions. It's only returning this short preview. If we want to manipulate this query, we can do that without forcing the database to give us everything. Let's look at only the rows that match corn plots.
+Notice at the top, it says `table<treatments> [?? x 3]`? This tells us that we're viewing table (**`table<treatments>`**) in a database (**`Database: sqlite 3.30.1 [./experiment.db]`**), instead of a local dataframe. (You might also see **`lazy query`** instead of a table name; that means we've constructed a temporary unnamed table in the DB's memory.)
+
+It also tells us that we have **3** columns, but **unknown number** of rows. Since we just created this table we actually know there are only those 8 rows. However, often in queries, the database could have millions of rows. It's only returning this short preview. If we want to manipulate this query, we can do that without forcing the database to give us everything (which saves your time in front of a computer waiting for commands to run). 
+
+Let's look at only the rows that match corn plots.
 
 
 ```{r paged.print = F}
@@ -214,14 +222,14 @@ number_of_plots <- tbl(con, "treatments") %>%
 number_of_plots
 ```
 
-And again, we can see what SQL query is really being sent with `show_query()`:
+And again, we can see what SQL query is really being sent with **`show_query()`**:
 
 ```{r paged.print = F}
 show_query(number_of_plots)
 ```
 
 
-But there are some functions that can only be run inside R. For those, you have to force the lazy query to execute fully, with `collect()`.
+But there are some functions that can only be run inside R. For those, you have to force the lazy query to execute fully, with **`collect()`**.
 
 ```{r paged.print = F}
 tbl(con, "treatments") %>% 
@@ -232,13 +240,13 @@ tbl(con, "treatments") %>%
     )
 ```
 
-You can try running it without the `collect()` and you'll see you get a fairly unhelpful error message. However, if you see any kind of error that claims a column isn't present when you know it's there, or a function is missing, that's a good indicator of a failed lazy query.
+You can try running it without the **`collect()`** and you'll see you get a fairly unhelpful error message. However, if you see any kind of error that claims a column isn't present when you know it's there, or a function is missing, that's a good indicator of a failed lazy query.
 
-Here's a handy reference for the functions that `{dbplyr}` currently knows how to translate and run inside the DB: https://dbplyr.tidyverse.org/articles/sql-translation.html
+Here's a handy reference for the functions that `{dbplyr}` currently knows how to translate and run inside the DB: [https://dbplyr.tidyverse.org/articles/sql-translation.html](https://dbplyr.tidyverse.org/articles/sql-translation.html){target="_blank"}
 
 # Joins
 
-One of the most powerful functions in SQL is the join. There are several types of joins, and it usually takes a little thinking to make sure you're getting the one you want. If there's a one-to-one relationship with your keys (each row is identified by one `plot_id`, and each `plot_id` only refers to one row in a table, for example), then a **LEFT JOIN** is a good bet.
+One of the most powerful functions in SQL is the join. There are several types of joins, and it usually takes a little thinking to make sure you're getting the one you want. If there's a one-to-one relationship with your keys (each row is identified by one **`plot_id`**, and each **`plot_id`** only refers to one row in a table, for example), then a **LEFT JOIN** is a good bet.
 
 ## Vanilla SQL
 ```{r paged.print = F}
@@ -251,7 +259,7 @@ SELECT * FROM treatments
 )
 ```
 
-Notice that `plot_id` gets printed twice, this is a quirk of SQL. While it is nice to make sure that the right columns were matched, it's usually just in the way. There are cleaner ways to get your query using tidy R syntax.
+Notice that **`plot_id`** gets printed twice, this is a quirk of SQL. While it is nice to make sure that the right columns were matched, it's usually just in the way. There are cleaner ways to get your query using tidy R syntax.
 
 ## Tidy R
 ```{r paged.print = FALSE}
@@ -264,9 +272,9 @@ yield_data <-
 yield_data
 ```
 
-Again, notice that this is a lazy query! The join happened inside the DB. This can be MUCH faster than inside R for large complex joins. We can then `collect()` the result and use it for further analysis.
+Again, notice that this is a lazy query! The join happened inside the DB. This can be MUCH faster than inside R for large complex joins. We can then **`collect()`** the result and use it for further analysis.
 
-Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at `?dplyr::full_join` is a good resource for explaining them, and there are many online tutorials as well (e.g. https://r4ds.had.co.nz/relational-data.html#understanding-joins). However, not all the joins are implemented in SQLite, so you may have to `collect()` and do them locally inside R. I'm fairly sure all of them are implemented in `{RPostgres}` though, so we'll look at them more when we read the PSA On-Farm database.
+Other types of joins you might run into are **full**/**outer**/**cross**, **inner**, **right**, **semi**, and **anti**. The help page at **`?dplyr::full_join`** is a good resource for explaining them, and there are many online tutorials as well (e.g. [https://r4ds.had.co.nz/relational-data.html#understanding-joins](https://r4ds.had.co.nz/relational-data.html#understanding-joins){target="_blank}). However, not all the joins are implemented in SQLite, so you may have to **`collect()`** and do them locally inside R. I'm fairly sure all of them are implemented in `{RPostgres}` though, so we'll look at them more when we read the PSA On-Farm database.
 
 ----
 
