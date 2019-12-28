@@ -58,7 +58,7 @@ I strongly recommend using RStudio, available from [https://rstudio.com/products
 
 # Installing packages
 
-Base R is useful, but for this project we are going to take advantage of a few database-specific packages. Pay attention after you run each of these lines! When you run `install.packages`, lots of informative messages and download progress bars are printed, but there may be errors and warnings as well.
+Base R is useful, but for this project we are going to take advantage of a few database-specific packages. Pay attention after you run each of these lines! When you run **`install.packages`**, lots of informative messages and download progress bars are printed, but there may be errors and warnings as well.
 
 ## Download DBI
 
@@ -72,7 +72,7 @@ install.packages("DBI")
 
 This package contains the driver to connect to PostgreSQL databases, like the PSA On-Farm DB.
 
-> **WARNING** Due to a bug in the newest release of this package (**`1.2.0`**, as of late December 2019), connections to the database will fail. Instead, you need versions **`1.1.3`** or earlier. I've tested connections on Windows, MacOS, and Linux with **`1.1.1`**, so that's the instruction I'm giving here. I hope this will be resolved soon, and you will be able use the regular installation procedure to get the latest package.
+> **WARNING:** Due to a bug in the newest release of this package (**`1.2.0`**, as of late December 2019), connections to the database will fail. Instead, you need versions **`1.1.3`** or earlier. I've tested connections on Windows, MacOS, and Linux with **`1.1.1`**, so that's the instruction I'm giving here. I hope this will be resolved soon, and you will be able use the regular installation procedure to get the latest package.
 
 ```{r eval = FALSE}
 # install.packages("RPostgres")
@@ -92,7 +92,7 @@ This package contains both the driver and the database system itself for SQLite3
 install.packages("RSQLite")
 ```
 
-### Optionally download dplyr and dbplyr
+## Optionally download dplyr and dbplyr
 
 While not strictly required, I will be using the `{dbplyr}` interface to translate R code to the SQL backend. The syntax is much more user-friendly and intuitive, and it's useful for your local analyses as well. There are many tutorials online for learning `{dplyr}`, so this will only be a crash course in what's necessary.
 
@@ -103,9 +103,34 @@ install.packages("dplyr")
 install.packages("dbplyr")
 ```
 
-# What on earth is that funny looking `%>%`
+### Even more optionally
 
-In a lot of new R code, especially so-called `{tidyverse}`-flavored code, you'll see something called a **pipe operator**, `%>%`. It's for function composition, and you can think of it like reading your code out loud, and saying "then" every time you see it.
+There are some packages I use that you do not **need** for the basic outline of the tutorial. They're mostly for demonstrating plots, or when I want to show you an illustrative code chunk. However, these are not required to just query the database. Of course, I obviously find them useful in other analyses beyond this tutorial. If you do want to run every single line of code that I do as you follow along though, here's what you'll see used:
+
+#### Visualization:
+
+```{r eval = FALSE}
+install.packages("ggplot2")
+```
+
+#### Functional loops and string manipulation
+
+```{r eval = FALSE}
+install.packages("purrr")
+install.packages("stringr")
+```
+
+#### Mapping
+
+```{r eval = FALSE}
+install.packages("sf")
+install.packages("rnaturalearthdata")
+install.packages("leaflet")
+```
+
+# What on earth is that funny looking **`%>%`**
+
+In a lot of new R code, especially so-called `{tidyverse}`-flavored code, you'll see something called a *pipe operator*, **`%>%`**. It's for function composition, and you can think of it like reading your code out loud, and saying "then" every time you see it.
 
 ```{r}
 library(dplyr, warn.conflicts = FALSE)
@@ -116,7 +141,7 @@ rnorm(5) %>%   # generate 5 random numbers
   sqrt()        # THEN take the square-root of those
 ```
 
-This is identical to `sqrt(abs(sort(rnorm(5))))`. Whether you prefer the nested-parentheses style or the pipe-then style is up to you, just be aware that I'll be using the pipes in some of these tutorials.
+This is identical to **`sqrt(abs(sort(rnorm(5))))`**. Whether you prefer the nested-parentheses style or the pipe-then style is up to you, just be aware that I'll be using the pipes in some of these tutorials.
 
 The pipe is especially useful for the **table verbs** of `{dplyr}`, which usually take a dataframe as their first argument, and return a dataframe as output. This way they can be chained together. Here's an example of that:
 
