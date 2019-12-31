@@ -27,9 +27,9 @@ options(crayon.enabled = FALSE)
 # What is a DB?
 A database is a rectangular storage system, columns and rows of data, just like a spreadsheet. Unlike a spreadsheet, the way you read and write data in a DB is through code or the command line, not through a point-and-click interface like Google Sheets or Excel.
 
- > I'll mostly be using "database" to mean a relational database management system, like PostgreSQL or SQLite, but there are other paradigms.
+I'll mostly be using "database" to mean a relational database management system, like PostgreSQL or SQLite, but there are other paradigms.
  
- > The code you use to interact with the DB is called "SQL" (Structured Query Language), but you don't *have* to know SQL. In the code examples I'll show, there will be a "vanilla SQL" version and a "tidy R" version.
+The code you use to interact with the DB is called "SQL" (Structured Query Language), but you don't *have* to know SQL. In the code examples I'll show, there will be a "vanilla SQL" version and a "tidy R" version.
 
 ## Where is a DB?
 

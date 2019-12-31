@@ -3002,13 +3002,11 @@ div.tocify {
 <p>In this series, there are two files for each step in the tutorial. One is called <code>###_Title.nb.html</code>, and it’s a plain HTML file you can open in your browser. In that file, you will see plain text, as well as boxes of code. The grey boxes have code you can copy-paste into an R script, or line-by-line at the R console. The white boxes below show the output you should see after running each chunk. They look like this:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYGBgclxubWVhbihybm9ybSgxMDAwKSlcbmBgYFxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r</p>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVhbihybm9ybSgxMDAwKSlcbmBgYCJ9 -->
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">mean</span>(<span class="kw">rnorm</span>(<span class="dv">1000</span>))</a></code></pre></div>
-<pre><code></code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuMDQ0MDI0NlxuIn0= -->
-<pre><code>[1] 0.0440246</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIC0wLjAxNDIzNTg0XG4ifQ== -->
+<pre><code>[1] -0.01423584</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3043,7 +3041,7 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiaW5zdGFsbC5wYWNrYWdlcyhcIkRCSVwiKSJ9 -->
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;DBI&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;DBI&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3057,14 +3055,14 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbIiMgaW5zdGFsbC5wYWNrYWdlcyhcIlJQb3N0Z3Jlc1wiKSIsIiIsImluc3RhbGwucGFja2FnZXMoXCJkZXZ0b29sc1wiKSIsImRldnRvb2xzOjppbnN0YWxsX3ZlcnNpb24oIiwiICBcIlJQb3N0Z3Jlc1wiLCAiLCIgIHZlcnNpb24gPSBcIjEuMS4xXCIsICIsIiAgcmVwb3MgPSBcImh0dHA6Ly9jcmFuLnVzLnItcHJvamVjdC5vcmdcIiIsIiAgKSJdfQ== -->
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># install.packages(&quot;RPostgres&quot;)</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">devtools<span class="op">::</span><span class="kw">install_version</span>(</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="st">&quot;RPostgres&quot;</span>, </a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="dt">version =</span> <span class="st">&quot;1.1.1&quot;</span>, </a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">  )</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># install.packages(&quot;RPostgres&quot;)</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">devtools<span class="op">::</span><span class="kw">install_version</span>(</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="st">&quot;RPostgres&quot;</span>, </a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="dt">version =</span> <span class="st">&quot;1.1.1&quot;</span>, </a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">  )</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3075,7 +3073,7 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiaW5zdGFsbC5wYWNrYWdlcyhcIlJTUUxpdGVcIikifQ== -->
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;RSQLite&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;RSQLite&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3087,8 +3085,8 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbImluc3RhbGwucGFja2FnZXMoXCJkcGx5clwiKSIsImluc3RhbGwucGFja2FnZXMoXCJkYnBseXJcIikiXX0= -->
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;dbplyr&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;dbplyr&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3100,7 +3098,7 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiaW5zdGFsbC5wYWNrYWdlcyhcImdncGxvdDJcIikifQ== -->
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3110,9 +3108,9 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbImluc3RhbGwucGFja2FnZXMoXCJwdXJyclwiKSIsImluc3RhbGwucGFja2FnZXMoXCJzdHJpbmdyXCIpIiwiaW5zdGFsbC5wYWNrYWdlcyhcImx1YnJpZGF0ZVwiKSJdfQ== -->
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;purrr&quot;</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;stringr&quot;</span>)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;lubridate&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;purrr&quot;</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;stringr&quot;</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;lubridate&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3122,9 +3120,9 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbImluc3RhbGwucGFja2FnZXMoXCJzZlwiKSIsImluc3RhbGwucGFja2FnZXMoXCJybmF0dXJhbGVhcnRoZGF0YVwiKSIsImluc3RhbGwucGFja2FnZXMoXCJsZWFmbGV0XCIpIl19 -->
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;sf&quot;</span>)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;rnaturalearthdata&quot;</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;leaflet&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;sf&quot;</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;rnaturalearthdata&quot;</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">install.packages</span>(<span class="st">&quot;leaflet&quot;</span>)</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -3137,32 +3135,38 @@ mean(rnorm(1000))
 <p>In a lot of new R code, especially so-called <code>{tidyverse}</code>-flavored code, you’ll see something called a <em>pipe operator</em>, <strong><code>%&gt;%</code></strong>. It’s for function composition, and you can think of it like reading your code out loud, and saying “then” every time you see it.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYGBgclxubGlicmFyeShkcGx5ciwgd2Fybi5jb25mbGljdHMgPSBGQUxTRSlcblxucm5vcm0oNSkgJT4lICAgIyBnZW5lcmF0ZSA1IHJhbmRvbSBudW1iZXJzXG4gIHNvcnQoKSAlPiUgICAgIyBUSEVOIHNvcnQgdGhvc2VcbiAgYWJzKCkgJT4lICAgICAjIFRIRU4gdGFrZSB0aGUgYWJzb2x1dGUgdmFsdWUgb2YgdGhvc2VcbiAgc3FydCgpICAgICAgICAjIFRIRU4gdGFrZSB0aGUgc3F1YXJlLXJvb3Qgb2YgdGhvc2VcbmBgYFxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">rnorm</span>(<span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># generate 5 random numbers</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">sort</span>() <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># THEN sort those</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw">abs</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># THEN take the absolute value of those</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span><span class="kw">sqrt</span>()        <span class="co"># THEN take the square-root of those</span></a></code></pre></div>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5ciwgd2Fybi5jb25mbGljdHMgPSBGQUxTRSlcblxucm5vcm0oNSkgJT4lICAgIyBnZW5lcmF0ZSA1IHJhbmRvbSBudW1iZXJzXG4gIHNvcnQoKSAlPiUgICAgIyBUSEVOIHNvcnQgdGhvc2VcbiAgYWJzKCkgJT4lICAgICAjIFRIRU4gdGFrZSB0aGUgYWJzb2x1dGUgdmFsdWUgb2YgdGhvc2VcbiAgc3FydCgpICAgICAgICAjIFRIRU4gdGFrZSB0aGUgc3F1YXJlLXJvb3Qgb2YgdGhvc2VcbmBgYCJ9 -->
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">rnorm</span>(<span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># generate 5 random numbers</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">sort</span>() <span class="op">%&gt;%</span><span class="st">    </span><span class="co"># THEN sort those</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw">abs</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># THEN take the absolute value of those</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">  </span><span class="kw">sqrt</span>()        <span class="co"># THEN take the square-root of those</span></a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuODM2MjAyOSAwLjcwNTUwMDYgMC4yOTczNjI5IDAuODMzODMwNyAxLjA3NDU5MzlcbiJ9 -->
+<pre><code>[1] 0.8362029 0.7055006 0.2973629 0.8338307 1.0745939</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This is identical to <strong><code>sqrt(abs(sort(rnorm(5))))</code></strong>. Whether you prefer the nested-parentheses style or the pipe-then style is up to you, just be aware that I’ll be using the pipes in some of these tutorials.</p>
 <p>The pipe is especially useful for the <strong>table verbs</strong> of <code>{dplyr}</code>, which usually take a dataframe as their first argument, and return a dataframe as output. This way they can be chained together. Here’s an example of that:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYGBgclxuaXJpcyAlPiUgXG4gIGZpbHRlcihTcGVjaWVzICE9IFxcc2V0b3NhXFwpICU+JSBcbiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICU+JSBcbiAgbXV0YXRlKFBldGFsLkFyZWEgPSBQZXRhbC5MZW5ndGggKiBQZXRhbC5XaWR0aCkgJT4lIFxuICBncm91cF9ieShTcGVjaWVzKSAlPiUgXG4gIHN1bW1hcml6ZShtID0gbWVhbihQZXRhbC5BcmVhKSlcbmBgYFxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> </span>\setosa\) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">m =</span> <span class="kw">mean</span>(Petal.Area))</a></code></pre></div>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXJpcyAlPiUgXG4gIGZpbHRlcihTcGVjaWVzICE9IFwic2V0b3NhXCIpICU+JSBcbiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICU+JSBcbiAgbXV0YXRlKFBldGFsLkFyZWEgPSBQZXRhbC5MZW5ndGggKiBQZXRhbC5XaWR0aCkgJT4lIFxuICBncm91cF9ieShTcGVjaWVzKSAlPiUgXG4gIHN1bW1hcml6ZShtID0gbWVhbihQZXRhbC5BcmVhKSlcbmBgYCJ9 -->
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">m =</span> <span class="kw">mean</span>(Petal.Area))</a></code></pre></div>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIyBBIHRpYmJsZTogMiB4IDJcbiAgU3BlY2llcyAgICAgICAgbVxuICA8ZmN0PiAgICAgIDxkYmw+XG4xIHZlcnNpY29sb3IgIDUuNzJcbjIgdmlyZ2luaWNhICAxMS4zIFxuIn0= -->
+<pre><code># A tibble: 2 x 2
+  Species        m
+  &lt;fct&gt;      &lt;dbl&gt;
+1 versicolor  5.72
+2 virginica  11.3 </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This code says:</p>
@@ -3178,32 +3182,32 @@ mean(rnorm(1000))
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbImlyaXMiLCIiLCJpcmlzICU+JSAiLCIgIGZpbHRlcihTcGVjaWVzICE9IFwic2V0b3NhXCIpICIsIiIsImlyaXMgJT4lICIsIiAgZmlsdGVyKFNwZWNpZXMgIT0gXCJzZXRvc2FcIikgJT4lICIsIiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICIsIiIsImlyaXMgJT4lICIsIiAgZmlsdGVyKFNwZWNpZXMgIT0gXCJzZXRvc2FcIikgJT4lICIsIiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICU+JSAiLCIgIG11dGF0ZShQZXRhbC5BcmVhID0gUGV0YWwuTGVuZ3RoICogUGV0YWwuV2lkdGgpICIsIiIsImlyaXMgJT4lICIsIiAgZmlsdGVyKFNwZWNpZXMgIT0gXCJzZXRvc2FcIikgJT4lICIsIiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICU+JSAiLCIgIG11dGF0ZShQZXRhbC5BcmVhID0gUGV0YWwuTGVuZ3RoICogUGV0YWwuV2lkdGgpICU+JSAiLCIgIGdyb3VwX2J5KFNwZWNpZXMpICIsIiIsImlyaXMgJT4lICIsIiAgZmlsdGVyKFNwZWNpZXMgIT0gXCJzZXRvc2FcIikgJT4lICIsIiAgc2VsZWN0KFBldGFsLkxlbmd0aCwgUGV0YWwuV2lkdGgsIFNwZWNpZXMpICU+JSAiLCIgIG11dGF0ZShQZXRhbC5BcmVhID0gUGV0YWwuTGVuZ3RoICogUGV0YWwuV2lkdGgpICU+JSAiLCIgIGdyb3VwX2J5KFNwZWNpZXMpICU+JSAiLCIgIHN1bW1hcml6ZShtID0gbWVhbihQZXRhbC5BcmVhKSkiXX0= -->
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">iris</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) </a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) </a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) </a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="st">  </span><span class="kw">group_by</span>(Species) </a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb15-21" data-line-number="21">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-23" data-line-number="23"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-24" data-line-number="24"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-25" data-line-number="25"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-26" data-line-number="26"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">m =</span> <span class="kw">mean</span>(Petal.Area))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">iris</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) </a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) </a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) </a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="st">  </span><span class="kw">group_by</span>(Species) </a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="st">  </span><span class="kw">filter</span>(Species <span class="op">!=</span><span class="st"> &quot;setosa&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="st">  </span><span class="kw">select</span>(Petal.Length, Petal.Width, Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Petal.Area =</span> Petal.Length <span class="op">*</span><span class="st"> </span>Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">m =</span> <span class="kw">mean</span>(Petal.Area))</a></code></pre></div>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 </div>
