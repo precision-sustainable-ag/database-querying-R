@@ -30,5 +30,5 @@ fs::dir_ls(glob = "*.Rmd") %>%
     rtext <- readr::read_lines(.x)
     
     colons <- stringr::str_extract_all(rtext, "\\b[A-z0-9]+::[.A-z0-9_]+")
-    purrr::compact(colons) %>% unlist() %>% sort()
+    purrr::compact(colons) %>% unlist() %>% sort() %>% unique()
   })
