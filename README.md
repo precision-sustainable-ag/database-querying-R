@@ -1,25 +1,24 @@
 
-<div style="padding-top: 0.5em;">
+<div>
 
-<h3>
+<h2>
 
-<img src="assets/PSAlogo-only.png" style="height: 1.5em; vertical-align: middle;"/>
-PSA Training Series
+<img src="assets/PSAlogo-text.png" height = "64"/><br/> PSA Training
+Series
 <a href="https://github.com/precision-sustainable-ag" target="_blank">github.com/precision-sustainable-ag</a>
 
-</h3>
+</h2>
 
 </div>
 
 <h4>
 
-<img src="assets/database-solid.svg" style="height: 1em;"/>
-<img src="assets/table-solid.svg" style="height: 1em;"/>
-<img src="assets/terminal-solid.svg" style="height: 1em;"/>
-<img src="assets/r-project-brands.svg" style="height: 1em;"/> Database
-Querying with R —
-<a href="https://github.com/brianwdavis" target="_blank">Brian W.
-Davis</a> 2020-01-07
+<img src="assets/database-solid.svg" height = "16"/>
+<img src="assets/table-solid.svg" height = "16"/>
+<img src="assets/terminal-solid.svg" height = "16"/>
+<img src="assets/r-project-brands.svg" height = "16"/> Database Querying
+with R — <a href="https://github.com/brianwdavis" target="_blank">Brian
+W. Davis</a> 2020-01-07
 
 </h4>
 
@@ -48,13 +47,13 @@ to clone and follow along interactively in R on your computer.
 
 -----
 
-## <img src="assets/PSAlogo-text.png" style="height: 2em; padding-right: 1em;"/><a href="http://www.precisionsustainableag.org" target="_blank">precision<wbr>sustainable<wbr>ag.org</a>
+## <a href="http://www.precisionsustainableag.org" target="_blank">precision<wbr>sustainable<wbr>ag.org</a>
 
 Icons:
 <a href="https://fontawesome.com" target="_blank">fontawesome.com</a>,
-<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img src="assets/creative-commons-brands.svg" style="height: 1em;">
+<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"><img src="assets/creative-commons-brands.svg" height = "16">
 BY 4.0</a> | This work,
-<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img src="assets/creative-commons-brands.svg" style="height: 1em;">
+<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"><img src="assets/creative-commons-brands.svg" height = "16">
 BY-SA 4.0</a>
 
 -----
