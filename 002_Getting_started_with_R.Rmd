@@ -114,11 +114,12 @@ There are some packages I use that you do not **need** for the basic outline of 
 install.packages("ggplot2")
 ```
 
-#### Functional loops and string manipulation
+#### Functional loops and string/datetime manipulation
 
 ```{r eval = FALSE}
 install.packages("purrr")
 install.packages("stringr")
+install.packages("lubridate")
 ```
 
 #### Mapping

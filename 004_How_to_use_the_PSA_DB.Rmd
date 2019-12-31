@@ -193,7 +193,7 @@ tbl(con, "site_information") %>%
 
 ## Mapping the sites
 
-So let's do some local computation on the **`site_list`** object we just stored. First we'll make a static map using the `{ggplot2}` package, which is good for making high quality customizable images. Then we'll make an interactive map with `{leaflet}`, a JavaScript package that embeds maps in documents like these or web applications. 
+So let's do some local computation on the **`site_list`** object we stored above. First we'll make a static map using the `{ggplot2}` package, which is good for making high quality customizable images. Then we'll make an interactive map with `{leaflet}`, a JavaScript package that embeds maps in documents like these or web applications. 
 
 We won't fuss around too much with the options in either, but both are powerful enough to do any kind of mapping visualization you can imagine. You don't need any of the other packages I'm using here if you aren't making maps, but they're handy to have if you are.
 
@@ -224,9 +224,84 @@ leaflet(
   addMarkers()
 ```
 
+
+## Reducing rows returned
+
+With the mapping example we wanted all the sites, but some tables just have a lot of rows. You probably want to use a subset of those rows to start your model or visualize before jumping in with the whole thing.
+
+We saw above that the largest table in the DB is the **`"weather"`** table. Let's look at just the first few rows with a lazy query:
+
+```{r paged.print = FALSE}
+tbl(con, "weather")
+```
+
+We learned in the last notebook on SQLite how to filter on text and numeric columns, but there's two new ones here, **`date`** and **`datetime`**. Really these are still both just numbers, usually counting something like the number of seconds since 1970-Jan-01, or something like that. But it's hard to think in terms of when `18262` is, or `1577854800`. You're much more familiar with working with **January 1, 2020** and **2020-01-01 12:00AM EST**.
+
+There are two main ways to work with date(time)s in R. In base R, there's **`as.Date`** and **`as.POSIXct`** (but the documentation to use the formats is in **`?strptime`**) and in the `{tidyverse}`, there's a whole package called `{lubridate}`. If that seems too complicated, you're right. Dates and times [are notorious](https://xkcd.com/1179/){target="_blank"} for being a bear in every programming language and on every computer platform. It's easiest if you use an unambiguous international standard, like [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601){taget="_blank"}, [further reading](https://www.cl.cam.ac.uk/~mgk25/iso-time.html){target="_blank"}.
+
+```{r paged.print = FALSE}
+dts <- c("1984-08-23", "2020-01-01")
+tms <- c("1984-08-23 7:30:00 PM", "2020-01-01 12:00:00 AM")
+iso <- c("1984-08-23 19:30:00",   "2020-01-01 00:00:00")
+
+data.frame(
+  dates = as.Date(dts),
+  times = as.POSIXct(tms, format = "%Y-%m-%d %I:%M:%S %p"),
+  iso = as.POSIXct(iso)
+)
+
+tibble(
+  dates = lubridate::as_date(dts),
+  times = lubridate::as_datetime(tms),
+  iso = lubridate::as_datetime(iso)
+)
+```
+
+Notice that using the standard format in your text input makes your code a lot simpler to read. Likewise, `{lubridate}` is pretty good at guessing, so it can be a handy shortcut as well. I'll stick with base R for this example though, but I generally prefer the other package.
+
+So let's say instead of the million or so rows that **`"weather"`** has, we want just the observations from July 4, 2018. If we're using the **`date`** column, we would need to select exact equality. But if we're using the **`timez`** column, we want to select a range: everything greater than midnight that morning and less than 11:59:59PM that night.
+
+```{r paged.print = FALSE}
+date_query <- tbl(con, "weather") %>% 
+  filter(date == as.Date("2018-07-04"))
+
+date_query
+
+show_query(date_query)
+
+date_query %>% 
+  group_by(code) %>% 
+  tally()
+```
+
+So we can see that 24 hours of observations are returned in our query for each site. Let's try it with times instead:
+
+```{r paged.print = FALSE}
+t_start <- as.POSIXct("2018-07-04 00:00:00")
+t_end <- as.POSIXct("2018-07-04 23:59:59")
+
+time_query <- tbl(con, "weather") %>% 
+  filter(between(timez, t_start, t_end))
+
+time_query
+
+show_query(time_query)
+
+time_query %>% 
+  group_by(code) %>% 
+  tally()
+```
+
+We get **almost** the same results. Note that instead of **`dplyr::between`**, we could have said `filter(timez >= t_start, timez <= t_end)`, and it would have been the same. Sometimes I prefer the long-winded way of writing it, if it's clearer to read the code later.
+
+> **WARNING:** You have to watch your timezones carefully. You'll notice in the translated SQL, it used `'2018-07-04T04:00:00Z'` as our start time. I am writing this code on a machine in the `America/New_York` time zone, and on July 4 2018, that was equivalent to a `-4` offset (because of Daylight Saving Time, it's `-5` the rest of the year). Thus R assumed that any time I put in without an explicit timezone is my local time, while the **`timez`** column in the DB is UTC (or "Zulu") time.
+
+> **NOTE:** Whether the first query (the whole of 2018-07-04 at the prime meridian) or the second query (between midnight and midnight on 2018-07-04 on the east coast) is what you want is up to you. Just be aware of what times you're actually asking for and getting in return.
+
+
 # Joining two tables
 
-So we explored the most important table, **`"site_information"`**. It's important, because it keys the three letter farm codes to all the other data about each farm. What about **`"decomp_biomass"`**? That's all the data about the litterbag decomposition study, and it's where dry weight of the cover crop biomass is stored.
+We already explored the most important table, **`"site_information"`**. It's important, because it keys the three letter farm codes to all the other data about each farm. What about **`"decomp_biomass"`**? That's all the data about the litterbag decomposition study, and it's where dry weight of the cover crop biomass is stored.
 
 ```{r paged.print = FALSE}
 tbl(con, "decomp_biomass")
