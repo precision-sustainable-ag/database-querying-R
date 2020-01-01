@@ -52,6 +52,7 @@ There are additional benefits to using a structured relational database:
  * Planning a structure (schema) helps you decide how to organize your data
  
 Are there downsides to using a database?
+
  * You have to learn how to use them, by reading this tutorial
 
 ## Example
