@@ -221,7 +221,10 @@ leaflet(
   options = leafletOptions(maxZoom = 6)
   ) %>% 
   addTiles() %>% 
-  addMarkers()
+  addMarkers(
+    ~round(longitude, 1),
+    ~round(latitude, 1)
+  )
 ```
 
 
