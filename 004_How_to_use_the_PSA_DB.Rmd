@@ -389,8 +389,6 @@ bag_data
 That nasty SQL statement could be simplified to:
 
 ```{r eval = FALSE, paged.print = FALSE}
-options(max.print = 100) # so we don't overwhelm the output
-
 dbGetQuery(con, 
   "
   SELECT LHS.code, year, state, time, dry_biomass_wt, percent_n
