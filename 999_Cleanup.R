@@ -1,4 +1,4 @@
-# Anonymize HTML output
+## Anonymize HTML output
 
 fs::dir_ls(glob = "*.html") %>%
   purrr::walk(~{
@@ -15,7 +15,7 @@ fs::dir_ls(glob = "*.html") %>%
       readr::write_lines(.x)
   })
 
-# Find `library` calls
+## Find `library` calls
 fs::dir_ls(glob = "*.Rmd") %>% 
   purrr::map(~{
     rtext <- readr::read_lines(.x)
@@ -24,7 +24,7 @@ fs::dir_ls(glob = "*.Rmd") %>%
     purrr::compact(libs) %>% unlist()
   })
 
-# Find namespace calls
+## Find namespace calls
 fs::dir_ls(glob = "*.Rmd") %>% 
   purrr::map(~{
     rtext <- readr::read_lines(.x)
@@ -32,3 +32,34 @@ fs::dir_ls(glob = "*.Rmd") %>%
     colons <- stringr::str_extract_all(rtext, "\\b[A-z0-9]+::[.A-z0-9_]+")
     purrr::compact(colons) %>% unlist() %>% sort() %>% unique()
   })
+
+
+## Hide DB src in interactive use
+library(dbplyr)
+tbl(con, "cc_species")
+
+# source from dbplyr:::db_desc.PqConnection
+new_db_desc <- function (x) {
+  info <- dbGetInfo(x)
+  host <- if (info$host == "") 
+      "localhost"
+    else info$host
+  paste0("postgres ", info$serverVersion, " [...]")
+}
+
+assignInNamespace(
+  "db_desc.PqConnection", 
+  new_db_desc,
+  "dbplyr",
+  envir = asNamespace("dbplyr")
+  )
+
+# now hidden
+tbl(con, "cc_species")
+
+# reload
+detach("package:dbplyr", unload = TRUE)
+library(dbplyr)
+
+# now reverted
+tbl(con, "cc_species")

@@ -389,6 +389,8 @@ bag_data
 That nasty SQL statement could be simplified to:
 
 ```{r eval = FALSE, paged.print = FALSE}
+options(max.print = 100) # so we don't overwhelm the output
+
 dbGetQuery(con, 
   "
   SELECT LHS.code, year, state, time, dry_biomass_wt, percent_n
@@ -497,7 +499,8 @@ Again, this is overly-explicit generated SQL, which could probably be simplified
 ```{r paged.print = FALSE}
 
 local_biomass_df <- collect(biomass_with_units_query) %>% 
-  filter(!is.na(state))
+  filter(!is.na(state)) %>% 
+  arrange(year, state)
 
 local_biomass_df
 ```
