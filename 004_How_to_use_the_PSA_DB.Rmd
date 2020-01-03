@@ -466,7 +466,8 @@ biomass_with_site_query <- full_join(
   tbl(con, "site_information"),
   in_field_query,
   by = "code"
-)
+) %>% 
+  arrange(year, state)
 
 biomass_with_site_query
 ```
@@ -479,14 +480,14 @@ Now we take the temporary table and do another full/outer join, this time with t
 biomass_with_units_query <- biomass_with_site_query %>% 
   mutate_at(
     vars(matches("percent_")), 
-    list("g_m2" = ~.*dry_wt_est_g_m2)
+    list("g_m2" = ~.*dry_wt_est_g_m2/100)
     )
 
 # If you want to see a real mouthful, show the underlying SQL call
 show_query(biomass_with_units_query)
 ```
 
-The last step is to create new columns using an "anonymous function": **`~.*dry_wt_est_g_m2`**. This is the same thing as a function that looks like `multiplier <- function(x) { x * dry_wt_est_g_m2 }`. We then use that function on all the variables/columns (**`vars()`**) that match the text **`"percent_"`**. For every such column, it will now make a new column with the name **`percent_foo_g_m2`**, which will be the total amount of "foo" in $grams/meter^{2}$. 
+The last step is to create new columns using an "anonymous function": **`~.*dry_wt_est_g_m2/100`**. This is the same thing as a function that looks like `multiplier <- function(pct) { pct * dry_wt_est_g_m2 / 100}`. We then use that function on all the variables/columns (**`vars()`**) that match the text **`"percent_"`**. For every such column, it will now make a new column with the name **`percent_foo_g_m2`**, which will be the total amount of "foo" in $grams/meter^{2}$. 
 
 You can also see I printed out the generated SQL query, since this is still all happening inside the database. You could have pulled the query in locally at a number of points during this chain, and the `{dplyr}` syntax would have been identical (the calls to **`filter`, `mutate`, `summarize`, `group_by`, `full_join`**); just the calls to **`tbl(con, "table_name")`** would have been your local variables instead.
 
@@ -497,8 +498,7 @@ Again, this is overly-explicit generated SQL, which could probably be simplified
 ```{r paged.print = FALSE}
 
 local_biomass_df <- collect(biomass_with_units_query) %>% 
-  filter(!is.na(state)) %>% 
-  arrange(year, state)
+  filter(!is.na(state))
 
 local_biomass_df
 ```
