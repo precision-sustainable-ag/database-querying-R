@@ -13,17 +13,6 @@ output:
       after_body: assets/footer.html
 ---
 
-```{r echo = FALSE}
-options(crayon.enabled = FALSE)
-```
-
-## Links to other notebooks
-
-1. [What is a DB?](001_What_is_a_database.nb.html)
-2. [Getting started with R](002_Getting_started_with_R.nb.html)
-3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
-4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
-
 # Getting credentials
 
 To follow along with this tutorial (and eventually use the database for real analyses) you need to get the login credentials. Rohit is the contact person for that, and you can see how I've stored them below. I have a fake file called `secret-example.R` that's in this repository, so you can copy it and paste in your own username and password (without the **`< >`**).

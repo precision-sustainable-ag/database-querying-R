@@ -13,17 +13,6 @@ output:
       after_body: assets/footer.html
 ---
 
-```{r echo = FALSE}
-options(crayon.enabled = FALSE)
-```
-
-## Links to other notebooks
-
-1. [What is a DB?](001_What_is_a_database.nb.html)
-2. [Getting started with R](002_Getting_started_with_R.nb.html)
-3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
-4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
-
 # Set up a local DB
 
 To introduce working with a database, we'll use one you can't break or mess up, since it's just running locally on your computer. SQLite is a lightweight DB platform that's widely available and relatively simple. It's so simple that the "server" part is literally just a file sitting in your working directory, instead of a whole other application. You can use your command line as a client, or you can use R.

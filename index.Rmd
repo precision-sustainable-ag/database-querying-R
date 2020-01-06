@@ -9,11 +9,4 @@ output:
     theme: readable
 ---
 
-This is a set of four instructional R notebooks, as part of the PSA Training Series for Spring 2020. You can find the links to the rendered HTML pages below to read along, or return to the [GitHub repository](https://github.com/precision-sustainable-ag/database-querying-R){target="_blank"} to clone and follow along interactively in R on your computer.
-
-## Links to the tutorial
-
-1. [What is a DB?](001_What_is_a_database.nb.html)
-2. [Getting started with R](002_Getting_started_with_R.nb.html)
-3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
-4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
+This is a set of four instructional R notebooks, as part of the PSA Training Series for Spring 2020. You can find the links to the rendered HTML pages above to read along, or return to the [GitHub repository](https://github.com/precision-sustainable-ag/database-querying-R){target="_blank"} to clone and follow along interactively in R on your computer. There are also links to video walkthroughs for each notebook.

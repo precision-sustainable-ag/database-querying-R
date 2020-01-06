@@ -47,6 +47,16 @@ to clone and follow along interactively in R on your computer.
 
 -----
 
+## Video walkthroughs of the tutorial
+
+1.  [What is a DB?](https://youtu.be/uLL2fi6zzwc)
+2.  [Getting started with R](https://youtu.be/SFcocTbsMOA)
+3.  [How to use a local DB](https://youtu.be/6RPd7TOTAyI)
+4.  [How to use the PSA
+DB](https://youtu.be/x9j0CguHEIM)
+
+-----
+
 ## <a href="http://www.precisionsustainableag.org" target="_blank">precision<wbr>sustainable<wbr>ag.org</a>
 
 Icons:

@@ -33,6 +33,9 @@ fs::dir_ls(glob = "*.Rmd") %>%
     purrr::compact(colons) %>% unlist() %>% sort() %>% unique()
   })
 
+## Setup chunk
+options(crayon.enabled = FALSE)
+
 
 ## Hide DB src in interactive use
 library(dbplyr)

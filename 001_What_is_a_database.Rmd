@@ -12,17 +12,6 @@ output:
       before_body: assets/header.html
       after_body: assets/footer.html
 ---
-
-```{r echo = FALSE}
-options(crayon.enabled = FALSE)
-```
-
-## Links to other notebooks
-
-1. [What is a DB?](001_What_is_a_database.nb.html)
-2. [Getting started with R](002_Getting_started_with_R.nb.html)
-3. [How to use a local DB](003_How_to_use_a_local_DB.nb.html)
-4. [How to use the PSA DB](004_How_to_use_the_PSA_DB.nb.html)
  
 # What is a DB?
 A database is a rectangular storage system, columns and rows of data, just like a spreadsheet. Unlike a spreadsheet, the way you read and write data in a DB is through code or the command line, not through a point-and-click interface like Google Sheets or Excel.
