@@ -41,6 +41,11 @@ This is a set of four instructional R notebooks, as part of the PSA Training Ser
 
 ----
 
+## FAQs
+
+If you have questions or feedback, please open an Issue on this repository, and I'll try my best to answer and also clarify the tutorial documents for later readers.
+
+----
 
 ## <a href="http://www.precisionsustainableag.org" target="_blank">precision<wbr>sustainable<wbr>ag.org</a>
 
